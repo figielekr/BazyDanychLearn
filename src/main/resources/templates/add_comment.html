@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lol</title>
+</head>
+<body>
+
+<form th:align="center" th:action="@{/add_comment_create}"  method="post">
+  <p>Wypełnij dane</p>
+  <div>
+    <label> articleid
+      <input type="text" th:name="articleid"> <br>
+    </label>
+    <label> comment
+      <input type="text" th:name="comment"><br>
+    </label>
+    <label> author
+      <input type="text" th:name="author"><br>
+    </label>
+    <label> createdate
+      <input type="text" th:name="createdate"><br>
+    </label>
+    <label> likes
+      <input type="text" th:name="likes"><br>
+    </label>
+    <label> dislikes
+      <input type="text" th:name="dislikes"><br>
+    </label>
+    <button>submit</button>
+  </div>
+</form>
+
+<div lang="en" th:replace="fragments/footer"> </div>
+
+</body>
+</html>

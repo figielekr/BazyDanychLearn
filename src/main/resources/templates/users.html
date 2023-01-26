@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lol</title>
+</head>
+<body th:align="center">
+<p>siema</p>
+
+<tr th:each="user : ${users}">
+    <pre>
+  <td th:text="${user.firstName}"></td>
+  <td th:text="${user.lastName}"></td>
+  <td th:text="${user.email}"></td>
+  <td th:text="${user.password}"></td>
+    </pre>
+</tr>
+
+<div lang="en" th:replace="fragments/footer"> </div>
+
+</body>
+</html>

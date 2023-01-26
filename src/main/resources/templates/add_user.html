@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lol</title>
+</head>
+<body>
+
+<form th:align="center" th:action="@{/add_user_create}"  method="post">
+  <p>Wypełnij dane</p>
+  <div>
+    <label> firstname
+      <input type="text" th:name="firstname"> <br>
+    </label>
+    <label> lastname
+      <input type="text" th:name="lastname"><br>
+    </label>
+    <label> email
+      <input type="text" th:name="email" ><br>
+    </label>
+    <label> password
+      <input type="password" th:name="password"><br>
+    </label>
+    <button>submit</button>
+  </div>
+</form>
+<div lang="en" th:replace="fragments/footer"> </div>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lol</title>
+</head>
+<body th:align="center">
+<p>siema</p>
+
+<div style="border: 1px solid black; margin-bottom: 10px; padding: 10px" th:each="article : ${articles}">
+        <p th:text="${article}"></p>
+      <td th:each="comment : ${comments}">
+          <div th:if="${comment.articleID} == ${article.id}"  >
+              <p th:text="${comment}"></p>
+          </div>
+      </td>
+    <input type="text">
+    <button value="submit">dodaj</button>
+</div>
+
+
+
+
+
+<!--<div th:each="comment : ${comments}">
+    <p th:if="${comment.articleID == 2}" th:text="${comment}"></p>
+</div>-->
+
+
+
+
+
+
+
+
+
+    <!--<div  style="border: 1px solid black">
+        <tr th:each="article : ${articles}">
+            <td th:text="${article}"></td><br>
+        </tr>
+    </div>-->
+
+
+
+<div lang="en" th:replace="fragments/footer"> </div>
+
+</body>
+</html>
