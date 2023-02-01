@@ -9,6 +9,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false, unique = true)
+    private String userName;
     @Column(nullable = false, unique = true, length = 45)
     private String email;
     @Column(length = 15, nullable = false, name = "first_name")
@@ -16,15 +18,43 @@ public class User {
     @Column(length = 15, nullable = false, name = "last_name")
 
     private String lastName;
-    @Column(length = 25, nullable = false)
+    @Column( nullable = false)
     private String password;
+    @Column
+    private String role;
+    @Column
+    private String path;
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public User(String firstName, String lastName, String email, String password) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+    }
+
+    public User(String userName, String firstName, String lastName, String email, String password, String role) {
+        this.userName = userName;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.role = role;
     }
 
     public User() {
@@ -69,14 +99,25 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", path='" + path + '\'' +
                 '}';
     }
 }

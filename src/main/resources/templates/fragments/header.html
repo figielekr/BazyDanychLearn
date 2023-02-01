@@ -1,0 +1,8 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+
+<div class="lol" th:if="${currentUser} != anonymousUser" th:align="center" >
+    <p th:text="${currentUser}"></p>
+    <a th:href="display_profile">POKAZ PROFIL</a><br>
+    <a href="./logout">Logout</a>
+</div>

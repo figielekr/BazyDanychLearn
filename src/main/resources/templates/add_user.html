@@ -9,6 +9,9 @@
 <form th:align="center" th:action="@{/add_user_create}"  method="post">
   <p>Wypełnij dane</p>
   <div>
+    <label> username
+      <input type="text" th:name="username"> <br>
+    </label>
     <label> firstname
       <input type="text" th:name="firstname"> <br>
     </label>
@@ -17,6 +20,9 @@
     </label>
     <label> email
       <input type="text" th:name="email" ><br>
+    </label>
+    <label> role
+      <input type="text" th:name="role"><br>
     </label>
     <label> password
       <input type="password" th:name="password"><br>

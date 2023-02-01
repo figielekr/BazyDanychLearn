@@ -1,21 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-  <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <meta charset="UTF-8">
   <title>lol</title>
 </head>
 <body th:align="center">
 <p>siema</p>
 
+
+<div lang="en" th:replace="fragments/header"> </div>
+
+
+
+
+
 <div style="border: 1px solid black; margin-bottom: 10px; padding: 10px" th:each="article : ${articles}">
-        <p th:text="${article}"></p>
+    <a th:href="${article.id}">Wyświetl</a>
+    <p th:text="${article}"></p>
+    <div class="lol" th:if="${currentUser} != anonymousUser" th:align="center" >
+        <a th:href="@{/likes/} + ${article.id}">polub</a>
+        <tr th:each="like : ${likes}">
+            <div th:if="${article.id == like.articleID}">
+                <p th:text="${like}"></p>
+            </div>
+        </tr>
+    </div>
       <td th:each="comment : ${comments}">
           <div th:if="${comment.articleID} == ${article.id}"  >
               <p th:text="${comment}"></p>
           </div>
       </td>
-    <input type="text">
-    <button value="submit">dodaj</button>
+    <form th:action="@{/add_comment_from_article/} + ${article.id}"  method="post">
+        <!--<input type="hidden" th:name="ArticleID" th:value="${article.id}"  >--> <!--alternatywnie mozna wyszukac artykul po tresci i wtedy znalezc id-->
+        <!--<label>Autor
+            <input type="" th:name="author"  />
+        </label>-->
+        <label>Tresc
+            <input type="" th:name="content" >
+        </label>
+        <button>submit</button>
+    </form>
 </div>
 
 

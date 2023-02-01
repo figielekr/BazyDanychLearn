@@ -1,6 +1,11 @@
 package com.bazydanychtest.user.tables;
 
 import jakarta.persistence.*;
+/*
+import org.hibernate.annotations.CreationTimestamp;
+*/
+
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "articles")
@@ -16,12 +21,23 @@ public class Article {
     private Integer likes;
     @Column
     private Integer dislikes;
+    /*@Column
+    @CreationTimestamp
+    private Timestamp createDate;*/
 
-    public Article(String author, String title, Integer likes, Integer dislikes) {
+/*
+    @CreationTimestamp
+*/
+@Column
+    private String createDate;
+
+
+    public Article( String author, String title, Integer likes, Integer dislikes, String createDate) {
         this.author = author;
         this.title = title;
         this.likes = likes;
         this.dislikes = dislikes;
+        this.createDate = createDate;
     }
 
     public Article() {
@@ -66,6 +82,15 @@ public class Article {
         this.dislikes = dislikes;
     }
 
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
@@ -74,6 +99,7 @@ public class Article {
                 ", title='" + title + '\'' +
                 ", likes=" + likes +
                 ", dislikes=" + dislikes +
+                ", createDate='" + createDate + '\'' +
                 '}';
     }
 }

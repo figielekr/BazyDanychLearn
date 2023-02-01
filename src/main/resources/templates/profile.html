@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lol</title>
+</head>
+<body th:align="center">
+<p>siema</p>
+
+
+<p th:text="${user.get()}"></p>
+
+<div th:each="comment : ${comments}">
+  <p th:text="${comment}"></p>
+</div>
+
+<div th:each="article : ${articles}">
+  <p th:text="${article}"></p>
+</div>
+
+<form th:action="@{/image/upload}" method="post" enctype="multipart/form-data">
+  <div>
+    dodaj zdjecie
+    <input th:type="file"  th:name="file">
+    <button>submit</button>
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+<div lang="en" th:replace="fragments/footer "> </div>
+</body>
+</html>
