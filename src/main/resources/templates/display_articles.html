@@ -5,6 +5,10 @@
 
     <meta charset="UTF-8">
   <title>lol</title>
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+            crossorigin="anonymous"></script>
 </head>
 <body th:align="center">
 <p>siema</p>
@@ -27,25 +31,106 @@
             </div>
         </tr>
     </div>
-      <td th:each="comment : ${comments}">
-          <div th:if="${comment.articleID} == ${article.id}"  >
-              <p th:text="${comment}"></p>
-          </div>
-      </td>
-    <form th:action="@{/add_comment_from_article/} + ${article.id}"  method="post">
-        <!--<input type="hidden" th:name="ArticleID" th:value="${article.id}"  >--> <!--alternatywnie mozna wyszukac artykul po tresci i wtedy znalezc id-->
+
+    <button  th:onclick="getData([[${article.id}]])" >pokaz komentarze</button>
+    <div th:id="'tbData'+${article.id}"></div><br>
+    <!--<form th:action="@{/add_comment_from_article/} + ${article.id}"  method="post">
+        <input type="hidden" th:name="ArticleID" th:value="${article.id}"  >--> <!--alternatywnie mozna wyszukac artykul po tresci i wtedy znalezc id-->
         <!--<label>Autor
             <input type="" th:name="author"  />
         </label>-->
         <label>Tresc
-            <input type="" th:name="content" >
+            <input type="text" th:id="'content'+${article.id}" name="content" >
+            <div id="message"></div>
         </label>
-        <button>submit</button>
-    </form>
+        <button id="submitBTN" th:onclick="addData([[${article.id}]])" >submit</button>
+        <!--<button id="1" onclick="clearField(1)" >clear</button>-->
+    <!--</form>-->
 </div>
 
+<script>
+        //add onclick event
+    /*$("#submitBTN").click(function addData(){
+        //get input values
+        var content = $("#content").val();
+        var id = $("#submitBTN").val();
+        //ajax call
+        $.post("http://localhost:8080/add_comment_from_article/" + id,{
+            content:content
+
+        }, function (response){
+            //response from api
+            $("#message").html("<div class='lol'>+response.message+</div>")
+            clearField();
+        })
+    })
+    function clearField(){
+        $("content").val("");
+    }*/
+
+        function addData(id) {
+        let payload = {};
+        //payload["content"] = document.getElementById("content").value;
+            //var content = $("#content").val();
+            var content = document.getElementById("content"+id).value;
+            console.log(content)
+        $.post("http://localhost:8080/add_comment_from_article/" + id,{
+            content:content
+
+        })/*.then((res)=>res.json()).then((response)=>{
+            document.getElementById("message").innerHTML = response.message
+
+        })*/
+        }
+        function clearField(id){
+            //$(id).val("");
+            let getValue = document.getElementById(id);
+            getValue.value = "";
+        }
 
 
+    /*function addData(id) {
+        let payload = {};
+        payload["content"] = document.getElementById("content").value;
+        console.log(payload)
+        fetch("http://localhost:8080/add_comment_from_article/" + id,{
+            method:"POST",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        }).then((res)=>res.json()).then((response)=>{
+            document.getElementById("message").innerHTML = response.message
+        })
+
+    }*/
+    function getData(id){
+        fetch("http://localhost:8080/comment/" + id).then(
+            (res)=>res.json()
+        ).then((response)=>{
+            var tmpData = "";
+            console.log(response);
+            response.forEach((comments)=>{
+                //tmpData+="<tr>"
+                tmpData+="<div class='dsfdsfds'>"+comments.comment+" "+comments.author+"</div>";
+                //tmpData+="<div>"+comments.author+"</div>";
+                //tmpData+="</tr>"
+            })
+            document.getElementById("tbData"+id).innerHTML = tmpData;
+        })
+    }
+    //getData();
+</script>
+
+
+
+
+
+<!--<td th:each="comment : ${comments}">
+    <div th:if="${comment.articleID} == ${article.id}"  >       //display comments
+        <p th:text="${comment}"></p>
+    </div>
+</td>-->
 
 
 <!--<div th:each="comment : ${comments}">

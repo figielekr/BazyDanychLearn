@@ -111,29 +111,27 @@ public class MainController {
 
     @PostMapping("add_comment_from_article/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public String addCommentFromArticle(
+    public String  addCommentFromArticle(
             @PathVariable int id,
-            /*@ModelAttribute ("comment") Comment comment,*/
-            //@RequestParam(name = "ArticleID", required = false) Integer articleID,
-            //@RequestParam(name = "author", required = false) String author,
             @RequestParam(name = "content", required = false) String content
-
     ){
+        System.out.println(content);
         String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
         Comment comment = new Comment(id, content, currentName, commentService.timeCurrent(), 0, 0);
+        System.out.println(comment);
         repoComment.save(comment);
-        //System.out.println(comment);
         return "redirect:/display_articles";
     }
     //final String ssadsa = SecurityContextHolder.getContext().getAuthentication().getName();
-    @GetMapping("display_articles/{id}")
-    public String displayArticles(Model model, @PathVariable int id){
+    @GetMapping("display_articles")
+    public String displayArticles(Model model){
         final String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(currentName);
 
         model.addAttribute("currentUser", currentName);
         //model.addAttribute("articles", articleService.findArticleWithSorting("id"));
-        model.addAttribute("articles", articleService.findArticlesWithPagination(id, 5));
+        model.addAttribute("articles", repoArticle.findAll());
+        //model.addAttribute("articles", articleService.findArticlesWithPagination(id, 5));
 
         //model.addAttribute("articles", repoArticle.findAll(Sort.by(Sort.Direction.ASC, )));
         model.addAttribute("comments", commentService.findAll());
@@ -201,7 +199,7 @@ public class MainController {
         return "redirect:/display_profile";
     }
     @GetMapping("/comment/{id}")
-    public @ResponseBody List<Comment> getComments(@PathVariable int id){
+    public @ResponseBody List<Comment> getComments(@PathVariable int id){ //retrieve comments
         return repoComment.findByArticleID(id);
     }
     @GetMapping("ajaxtest")
