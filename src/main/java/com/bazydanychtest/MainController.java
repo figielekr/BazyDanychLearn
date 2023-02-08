@@ -1,13 +1,19 @@
 package com.bazydanychtest;
 
+import com.bazydanychtest.security.UserInfoUserDetails;
 import com.bazydanychtest.user.tables.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @EnableMethodSecurity
 @EnableWebSecurity
@@ -36,26 +43,31 @@ public class MainController {
     @Autowired private LikesRepository repoLikes;
     @Autowired private FileUploadService fileUploadService;
     @Autowired private ArticleService articleService;
+
     @GetMapping("")
     public String showHomePage() {
         return "index";
     }
 
     @GetMapping("add_user")
-    public String addUser(){
+    public String addUser(Model model){
+        String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("currentUser", currentName);
+        System.out.println(currentName);
         return "add_user";
     }
     @RequestMapping("add_user_create")
         public String createNewUser(
                 @RequestParam(name = "username", required = false) String username,
-                @RequestParam(name = "firstname", required = false) String firstname,
-                @RequestParam(name = "lastname", required = false) String lastname,
                 @RequestParam(name = "password", required = false) String password,
+                @RequestParam(name = "sex", required = false) String sex,
                 @RequestParam(name = "email", required = false) String email,
                 @RequestParam(name = "role", required = false) String role,
                 RedirectAttributes redirectAttributes
     ){
-        User user = new User(username, firstname, lastname, email, password, role);
+    //public User(String userName, String firstName, String lastName, String email, String sex, String password, String role, String path, String createDate, String lastVisit) {
+
+        User user = new User(username, email, sex, password, "USER", commentService.dateCurrent()+" "+commentService.timeCurrent(), sex + ".jpg");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.out.println(user);
         repo.save(user);
@@ -64,12 +76,13 @@ public class MainController {
     }
 
     @GetMapping("display_profile")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'user', 'admin')")
     public String displayPorifle(Model model){
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("user", repo.findByUserName(userName));
-        model.addAttribute("comments", repoComment.findByAuthor(userName));
-        model.addAttribute("articles", repoArticle.findByAuthor(userName));
+        String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("currentName", currentName);
+        model.addAttribute("user", repo.findByUserName(currentName));
+        model.addAttribute("comments", repoComment.findByAuthor(currentName));
+        model.addAttribute("articles", repoArticle.findByAuthor(currentName));
 
         return "profile";
     }
@@ -78,17 +91,18 @@ public class MainController {
         return "index";
     }
     @GetMapping("add_article")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'user', 'admin')")
     public String addArticle(){
         return "add_article";
     }
     @RequestMapping("add_article_create")
     public String addArticleCreate(
-            @RequestParam(name = "title", required = false) String title
-            //@RequestParam(name = "author", required = false) String author
-    ){
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(value = "file") MultipartFile multipartFile
+    ) throws IOException {
+        String path = fileUploadService.uploadImage(multipartFile);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Article article = new Article(userName, title, 0, 0, commentService.timeCurrent());
+        Article article = new Article(userName, title, 0, 0, path,repo.findByUserName(userName).get().getPath() ,commentService.dateCurrent(), commentService.timeCurrent());
         System.out.println(article);
         repoArticle.save(article);
         return "redirect:/display_articles";
@@ -97,45 +111,44 @@ public class MainController {
     public String addComment(){
         return "add_comment";
     }
-    @RequestMapping("add_comment_create")
-    public String addCommentCreate(
-            @RequestParam(name = "articleid", required = false) Integer articleid,
-            @RequestParam(name = "author", required = false) String author,
-            @RequestParam(name = "comment", required = false) String commentcontent
-    ){
-        Comment comment = new Comment(articleid,  commentcontent, author, "d", 0, 0);
-        System.out.println(comment);
-        repoComment.save(comment);
-        return "index";
-    }
-
-    @PostMapping("add_comment_from_article/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public String  addCommentFromArticle(
+    @RequestMapping(value = "add_comment_from_article/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'user', 'admin')")
+    public Comment  addCommentFromArticle(
             @PathVariable int id,
-            @RequestParam(name = "content", required = false) String content
+            @RequestBody ObjectNode commentContent
     ){
+        String content = commentContent.get("comment").asText();
         System.out.println(content);
         String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Comment comment = new Comment(id, content, currentName, commentService.timeCurrent(), 0, 0);
+        Comment comment = new Comment(id, content, currentName, 0, 0,  commentService.dateCurrent(), commentService.timeCurrent());
         System.out.println(comment);
         repoComment.save(comment);
-        return "redirect:/display_articles";
+        //return "redirect:/display_articles";
+        return comment;
     }
-    //final String ssadsa = SecurityContextHolder.getContext().getAuthentication().getName();
+    @RequestMapping(value = "ajaxTestRequest/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public Comment test(@RequestBody ObjectNode content,
+                        @PathVariable int id){
+        String commentContent = content.get("comment").asText();
+        Comment comment = new Comment(id, commentContent, "gal anonim",0, 0, commentService.dateCurrent(), commentService.timeCurrent());
+        repoComment.save(comment);
+        System.out.println(comment);
+        return comment;
+
+    }
     @GetMapping("display_articles")
     public String displayArticles(Model model){
         final String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(currentName);
-
         model.addAttribute("currentUser", currentName);
-        //model.addAttribute("articles", articleService.findArticleWithSorting("id"));
         model.addAttribute("articles", repoArticle.findAll());
-        //model.addAttribute("articles", articleService.findArticlesWithPagination(id, 5));
-
-        //model.addAttribute("articles", repoArticle.findAll(Sort.by(Sort.Direction.ASC, )));
         model.addAttribute("comments", commentService.findAll());
         model.addAttribute("likes", repoLikes.findByUsername(currentName));
+        //model.addAttribute("articles", articleService.findArticleWithSorting("id"));
+        //model.addAttribute("articles", articleService.findArticlesWithPagination(id, 5));
+        //model.addAttribute("articles", repoArticle.findAll(Sort.by(Sort.Direction.ASC, )));
         //System.out.println(model);
         return "display_articles";
     }
@@ -154,10 +167,9 @@ public class MainController {
     public String test(@PathVariable String cos, Model model){
         final String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("currentUser", currentName);
-        //System.out.println(currentName);
-        System.out.println("hababbbabaa");
-
-        return "redirect:/index";
+        System.out.println(currentName);
+        String link = "redirect:/" + cos;
+        return cos;
     }
     @GetMapping("/{id}")
     public String displayArticleById(@PathVariable int id, Model model){
@@ -184,7 +196,7 @@ public class MainController {
             repoLikes.deleteById(id);
 
         } else {
-            Likes like = new Likes(name, id, commentService.timeCurrent());
+            Likes like = new Likes(name, id, commentService.dateCurrent() + " "+ commentService.timeCurrent());
             repoLikes.save(like);
         }
 
@@ -192,10 +204,13 @@ public class MainController {
 
     }
     @PostMapping("/image/upload")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'user', 'admin')")
     public String uploadImage(@RequestParam(value = "file") MultipartFile multipartFile) throws IOException {
-        //String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        fileUploadService.uploadImage(/*fileName,*/ multipartFile);
-
+        //fileUploadService.uploadImage(multipartFile);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> user = repo.findByUserName(userName);
+        user.get().setPath(fileUploadService.uploadImage(multipartFile));
+        repo.save(user.get());
         return "redirect:/display_profile";
     }
     @GetMapping("/comment/{id}")
@@ -206,8 +221,5 @@ public class MainController {
     public String lol (){
         return "ajaxtest";
     }
-
-
-
 
 }
