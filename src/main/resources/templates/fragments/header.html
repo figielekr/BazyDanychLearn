@@ -1,8 +1,107 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 
+<!--
 <div class="lol" th:if="${currentUser} != anonymousUser" th:align="center" >
     <p th:text="${currentUser}"></p>
     <a th:href="display_profile">POKAZ PROFIL</a><br>
     <a href="./logout">Logout</a>
-</div>
+</div>-->
+<header>
+    <div class="container">
+        <div class="logo-container">
+            <a th:href="@{/}"><h3 class="logo">Logo<span>Brand</span></h3></a>
+        </div>
+        <div class="menu">
+            <div class="links">
+                <ul>
+                    <li class="nav-link"><a class="dropdown-test" href="#">Products<i class="fa-solid fa-caret-up"></i></a>
+                        <div class="submenu">
+                            <ul>
+                                <li class="submenu-link"><a th:href="@{add_article}">Add meme</a></li>
+                                <li class="submenu-link"><a href="#">Link 2</a></li>
+                                <li class="submenu-link"><a class="deep-link" href="#">Link 3<i class="fa-solid fa-caret-up"></i></a>
+                                    <div class="submenu second">
+                                        <ul>
+
+                                            <li class="submenu-link"><a href="#">Link 1</a></li>
+                                            <li class="submenu-link"><a class="deep-link" href="#">Link 2<i class="fa-solid fa-caret-up"></i></a>
+                                                <div class="submenu second">
+                                                    <ul>
+                                                        <li class="submenu-link"><a href="#">Link 1</a></li>
+                                                        <li class="submenu-link"><a href="#">Link 2</a></li>
+                                                        <li class="submenu-link"><a href="#">Link 3</a></li>
+                                                        <li class="submenu-link"><a href="#">Link 4</a></li>
+                                                        <div class="arrow"></div>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="submenu-link"><a href="#">Link 3</a></li>
+                                            <li class="submenu-link"><a href="#">Link 4</a></li>
+                                            <div class="arrow"></div>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="submenu-link"><a href="#">Link 4</a></li>
+                                <div class="arrow"></div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-link"><a href="./includes/test.php">PHP Testing</a></li>
+                    <li class="nav-link"><a class="dropdown-test" href="#">Info<i class="fa-solid fa-caret-up"></i></a>
+                        <div class="submenu">
+                            <ul>
+                                <li class="submenu-link"><a href="#">Link 1</a></li>
+                                <li class="submenu-link"><a href="#">Link 2</a></li>
+                                <li class="submenu-link"><a class="deep-link" href="#">Link 3<i class="fa-solid fa-caret-up"></i></a>
+                                    <div class="submenu second">
+                                        <ul>
+                                            <li class="submenu-link"><a href="#">Link 1</a></li>
+                                            <li class="submenu-link"><a class="deep-link" href="#">Link 2<i class="fa-solid fa-caret-up"></i></a>
+                                                <div class="submenu second">
+                                                    <ul>
+                                                        <li class="submenu-link"><a href="#">Link 1</a></li>
+                                                        <li class="submenu-link"><a href="#">Link 2</a></li>
+                                                        <li class="submenu-link"><a href="#">Link 3</a></li>
+                                                        <li class="submenu-link"><a href="#">Link 4</a></li>
+                                                        <div class="arrow"></div>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="submenu-link"><a href="#">Link 3</a></li>
+                                            <li class="submenu-link"><a href="#">Link 4</a></li>
+                                            <div class="arrow"></div>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="submenu-link"><a href="#">Link 4</a></li>
+                                <div class="arrow"></div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-link"><a href="../phpmyadmin/index.php">PHP MyAdmin</a></li>
+                </ul>
+            </div>
+            <!--<div class="login logout">
+                <a href="./login.html" class="log log-in">Log in</a>
+                <a href="./signup.html" class="log sign-in">Sign up</a>
+            </div>-->
+
+            <div th:if="${currentUser} != anonymousUser" class="login logout">
+                <a th:href="@{/display_profile}" class="log log-in">Profile </a>
+                <a href="http://localhost:8080/logout" class="log sign-in">Logout </a>
+            </div>
+
+            <div th:if="${currentUser} == anonymousUser" class="login logout" >
+                <a href="./login" class="log log-in">Log in</a>
+                <a href="./add_user" class="log sign-in">Sign up</a>
+            </div>
+
+        </div>
+        <div class="hamburger-container">
+            <div class="hamburger-menu">
+                <div></div>
+            </div>
+        </div>
+    </div>
+</header>

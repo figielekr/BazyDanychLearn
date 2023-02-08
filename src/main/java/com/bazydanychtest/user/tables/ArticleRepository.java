@@ -11,5 +11,4 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findByAuthor(String userName);
 
 
-
 }

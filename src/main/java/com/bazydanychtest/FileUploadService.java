@@ -24,10 +24,39 @@ public class FileUploadService {
     /*public void uploadFile(MultipartFile multipartFile) throws IOException {
         multipartFile.transferTo(new File("C:\\web projects\\java first\\bazydanychsecurity\\" + multipartFile.getOriginalFilename()));
     }*/
-    @Autowired
+
+
+    public String uploadImage(MultipartFile multipartFile) throws IOException {
+
+
+        String fileName = multipartFile.getOriginalFilename();
+        Path uploadDirectory = Paths.get("target\\classes\\static\\uploads\\");
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            String path = UUID.randomUUID()+ "-" + fileName;
+            Path filePath = uploadDirectory.resolve(path);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            return path;
+        } catch (IOException ioException){
+            throw new IOException("Error saving uploaded file: " + fileName, ioException);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+    /*@Autowired
     UserRepository repo;
 
-    public void  uploadImage(/*String fileName,*/ MultipartFile multipartFile) throws IOException {
+    public void  uploadImage(*//*String fileName, MultipartFile multipartFile) throws IOException {
 
 
         Optional<User> user = repo.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -46,8 +75,8 @@ public class FileUploadService {
         } else {
             System.out.println("Nie znaleziono uzytkownika.");
         }
-    }
-}
+    }*/
+
 
 
 

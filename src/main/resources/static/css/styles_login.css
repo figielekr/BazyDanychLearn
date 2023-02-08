@@ -1,0 +1,120 @@
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.register{
+    display: flex;
+    background: #787676FF;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 350px;
+    height: 200px;
+    flex-basis: 25%;
+    padding: 15px 25px;
+}
+::-webkit-input-placeholder {
+    color:transparent;  /*chrome*/
+}
+::-moz-placeholder {  /* Firefox 19+ */
+    color:transparent;
+}
+input{
+    position: relative;
+    display: flex;
+    height: 25px;
+    margin-bottom: -15px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 5px;
+    outline: none;
+    transition: .3s;
+    width: 173px;
+    color: #ab9f9f;
+    padding-left: 7px;
+}
+.button-create{
+    display: flex;
+    justify-content: center;
+}
+.button-create button{
+    background: #787676FF;
+    outline: none;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 5px;
+    width: 173px;
+    height: 24px;
+    margin: 10px;
+    transition: .3s;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ab9f9f;
+}
+button:hover{
+    color: white;
+
+}
+.button-create button:hover{
+    background-color: #5b5b5b;
+    border-color: #5b5b5b;
+}
+.button-create button:active{
+    background-color: #4d4d4d;
+    border-color: #4d4d4d;
+}
+p{
+    display: flex;
+    justify-content: center;
+    margin-top: -15px;
+    font-family: 'Montserrat', sans-serif;
+    color: blue;
+    font-size: 18px;
+}
+.return{
+    display: flex;
+    margin-top: -5px;
+    font-family: 'Montserrat', sans-serif;
+}
+label{
+    position: absolute;
+    font-family: Montserrat, sans-serif;
+    font-size: 15px;
+    margin: 5px;
+    color: #ab9f9f;
+    transform: translate(7px , -13px);
+    transition: .3s;
+    pointer-events: none;
+}
+/*.e-mail{
+    position: absolute;
+    transform: translate(7px, -11px);
+}*/
+
+input:focus~label,
+input:valid~label{
+    transform: translate(14px, -20px);
+    opacity: 1;
+    font-size: 9px;
+    background: #787676FF;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top: transparent;
+    border-bottom: transparent;
+    padding: 0 5px;
+}
+input:focus,
+input:valid{
+    background-color: #787676FF;
+    /*background-color: white;*/
+    color: #ab9f9f;
+}
+/*.e-mail.active{
+    position: absolute;
+    transform: translate(-65px, -11px);
+}*/
+a{
+    margin-top: -10px;
+}

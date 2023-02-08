@@ -1,0 +1,73 @@
+.page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70%;
+}
+.photo-part{
+    position: relative;
+    display: flex;
+    flex: 2;
+}
+.face{
+    position: absolute;
+    width: 85%;
+    height: 71%;
+    opacity: .7;
+    border-radius: 50%;
+    background-image: url("../../uploads/non-gender.jpg");
+    transition: .2s;
+    box-shadow: 2px 4px 13px #2a2a2a;
+
+}
+.face.non-gender{
+    opacity: 0;
+    transform: scale(1,0);
+}
+.face.non-gender.active{
+    opacity: .7;
+    transition-delay: .2s;
+    transform:scale(1);
+}
+.face.man{
+    /*display: none;*/
+    opacity: 0;
+    transform:  scale(1,0);
+
+}
+.face.woman{
+    opacity: 0;
+    transform: scale(1,0);
+}
+.face.woman.active{
+    opacity: .7;
+    transition-delay: .2s;
+    transform: scale(1);
+}
+.face.man.active{
+    opacity: .7;
+    transition-delay: .2s;
+    transform: scale(1);
+}
+.request-part{
+    display: flex;
+    flex: 3;
+    background-color: red;
+}
+.request{
+    display: flex;
+    width: 90%;
+    height: 80%;
+}
+.after-login {
+    display: flex;
+    justify-content: center;
+    background: rgba(200,200,200,.4);
+    border-radius: 20px;
+    flex-wrap: wrap;
+    min-width: 450px;
+    height: 230px;
+    flex-basis: 25%;
+    padding: 15px 12px;
+}

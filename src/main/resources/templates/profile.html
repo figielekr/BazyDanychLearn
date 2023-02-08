@@ -1,3 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <link rel="stylesheet" href="./css/afterlogin.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/profile.css">
+  <link rel="stylesheet" href="./css/article.css">
+  <link rel="stylesheet" href="./css/addArticle.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/28be9a9148.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>navbarV</title>
+</head>
+<body>
+<div lang="en" th:replace="fragments/header"> </div>
+<section class="profile">
+  <div class="profile_nav">
+    <ul>
+      <li><a href="#">Profil</a> </li>
+      <li><a href="#">Tematy</a> </li>
+      <li><a class="last" href="#">Komentarze</a> </li>
+    </ul>
+  </div>
+
+  <div class="profile_info">
+    <div class="profile_info_avatar">
+      <div class="profile_avatar">
+        <img th:src="@{${'/images/'+user.get().path}}" alt="">
+      </div>
+    </div>
+
+
+    <div class="profile_info_data">
+      <p></p>
+      <p></p>
+      <p>Nazwa użytkownika</p>
+      <b><p th:text="${user.get().userName}"></p></b>
+      <p>Ostatnia wizyta:</p>
+      <b><p th:text="${user.get().getLastVisit()}"></p></b>
+      <p>E-mail</p>
+      <b><p th:text="${user.get().email}"></p></b>
+      <p>Komentarzy</p>
+      <p></p>
+      <p>Płeć</p>
+      <b><p th:text="${user.get().sex}"></p></b>
+      <p>Data dołączenia</p>
+      <b><p th:text="${user.get().getCreateDate()}"></p></b>
+      <p>Zmien zdjecie</p>
+      <form action="includes/uploadFile.php" method='POST' enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="submit" name="submit" value=" Dalej ">
+      </form>
+    </div>
+  </div>
+
+
+
+</section>
+
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -25,18 +117,6 @@
     <button>submit</button>
   </div>
 </form>
-
-
-
-
-
-
-
-
-
-
-
-
 <div lang="en" th:replace="fragments/footer "> </div>
 </body>
-</html>
+</html>-->

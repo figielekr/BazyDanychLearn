@@ -17,23 +17,25 @@ public class Comment {
     @Column(nullable = false, length = 40)
     private String author;
     @Column(nullable = false, length = 40)
-    private String createDate;
-    @Column(nullable = false, length = 40)
     private Integer likes;
     @Column(nullable = false, length = 40)
-    private Integer dislikes;
+    private Integer disLikes;
+    @Column(nullable = false, length = 40)
+    private String createDate;
+    @Column(nullable = false, length = 40)
+    private String createTime;
 
     public Comment() {
     }
 
-    public Comment(Integer articleID, String comment, String author, String createDate, Integer likes, Integer dislikes) {
-        this.id = id;
+    public Comment(Integer articleID, String comment, String author, Integer likes, Integer disLikes, String createDate, String createTime) {
         this.articleID = articleID;
         this.comment = comment;
         this.author = author;
-        this.createDate = createDate;
         this.likes = likes;
-        this.dislikes = dislikes;
+        this.disLikes = disLikes;
+        this.createDate = createDate;
+        this.createTime = createTime;
     }
 
     public Integer getId() {
@@ -68,14 +70,6 @@ public class Comment {
         this.author = author;
     }
 
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
-
     public Integer getLikes() {
         return likes;
     }
@@ -84,24 +78,41 @@ public class Comment {
         this.likes = likes;
     }
 
-    public Integer getDislikes() {
-        return dislikes;
+    public Integer getDisLikes() {
+        return disLikes;
     }
 
-    public void setDislikes(Integer dislikes) {
-        this.dislikes = dislikes;
+    public void setDisLikes(Integer disLikes) {
+        this.disLikes = disLikes;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     @Override
     public String toString() {
-        return "Comments{" +
+        return "Comment{" +
                 "id=" + id +
                 ", articleID=" + articleID +
                 ", comment='" + comment + '\'' +
                 ", author='" + author + '\'' +
-                ", createDate='" + createDate + '\'' +
                 ", likes=" + likes +
-                ", dislikes=" + dislikes +
+                ", disLikes=" + disLikes +
+                ", createDate='" + createDate + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

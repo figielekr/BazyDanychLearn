@@ -1,25 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+  <link rel="stylesheet" href="./css/afterlogin.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/profile.css">
+  <link rel="stylesheet" href="./css/article.css">
+  <link rel="stylesheet" href="./css/addArticle.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/28be9a9148.js" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
-  <title>lol</title>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>navbarV</title>
 </head>
 <body>
+<div lang="en" th:replace="fragments/header"> </div>
+<main class="add_Article">
+  <section>
+    <div class="title">
+      <p>Dodaj zdjęcie.</p>
+    </div>
+    <div class="addArticle">
+      <form th:action="@{/add_article_create}" method='POST' enctype="multipart/form-data">
+        <div class="addArticle_info">
+          <b><p>Tytuł:</p></b>
+          <input name="title" type="text">
+          <b><p>Wybierz zdjęcie:</p></b>
+          <input class="input_file choose_photo" name="file" type="file">
+          <p></p>
+          <input class="input_file_dalej" type="submit" name="submit" value=" Dalej ">
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
 
-<form th:align="center" th:action="@{/add_article_create}"  method="post">
-  <p>Wypełnij dane</p>
-  <div>
-    <label> title
-      <input type="text" th:name="title"> <br>
-    </label>
-<!--    <label> author
-      <input type="text" th:name="author"><br>
-    </label>-->
-    <button>submit</button>
-  </div>
-</form>
 
-<div lang="en" th:replace="fragments/footer"> </div>
+
 
 </body>
 </html>

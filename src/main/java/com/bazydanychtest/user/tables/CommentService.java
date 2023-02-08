@@ -17,13 +17,17 @@ public interface CommentService extends JpaRepository<Comment, Integer> {
     @Query("SELECT a FROM comments a WHERE a.articleid = ?1")*/
     List<Comment> findByArticleID(Integer articleID);
 
-    default String timeCurrent(){
+    default String dateCurrent(){
         Date date = new Date();
-        String strDateFormat = "dd-MM-yyyy HH:mm:ss";
+        String strDateFormat = "dd-MM-yyyy";
         DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
         return dateFormat.format(date);
     }
-
-
+    default String timeCurrent(){
+        Date date = new Date();
+        String strDateFormat = "HH:mm:ss";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        return dateFormat.format(date);
+    }
 
 }

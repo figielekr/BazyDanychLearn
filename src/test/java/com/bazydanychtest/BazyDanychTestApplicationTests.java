@@ -29,8 +29,6 @@ class BazyDanychTestApplicationTests {
 	public void addNewUSer() {
 		User user = new User();
 		user.setEmail("uzytkownik@gmail.com");
-		user.setFirstName("Ola");
-		user.setLastName("Kowalska");
 		user.setPassword("123456");
 
 		repo.save(user);
@@ -47,7 +45,6 @@ class BazyDanychTestApplicationTests {
 		Optional<User> user = repo.findById(id);
 		if(user.isPresent()){
 			User userToModify = user.get();
-			userToModify.setLastName("klara");
 			System.out.println(user);
 		} else {
 			System.out.println("nie ma takiego uzytkownika");
@@ -66,9 +63,19 @@ class BazyDanychTestApplicationTests {
 		System.out.println(formattedDate);
 	}
 	@Test
-	public void cos(){
-		User user = new User("bla", "Baba", "Jaga", "jakisemail", "niewiemco", "ADMIN");
-		System.out.println(new UserInfoUserDetails(user));
-	}
+	public void findUser(){
+		int id = 1;
+		Optional<User> user = repo.findById(id);
+		//String path = repo.findById(id).get().getPath();
+		String path = repo.findByUserName("noyss").get().getPath();
 
+		System.out.println(path);
+	}
+	@Test
+	public void testObject(){
+		Optional<User> user = repo.findById(1);
+		Object object = (user.get().getPath());
+		System.out.println(object);
+
+	}
 }

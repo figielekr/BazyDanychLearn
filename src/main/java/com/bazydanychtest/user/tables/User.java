@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,58 +13,42 @@ public class User {
     private String userName;
     @Column(nullable = false, unique = true, length = 45)
     private String email;
-    @Column(length = 15, nullable = false, name = "first_name")
-    private String firstName;
-    @Column(length = 15, nullable = false, name = "last_name")
-
-    private String lastName;
+    @Column
+    private String sex;
     @Column( nullable = false)
     private String password;
     @Column
     private String role;
     @Column
     private String path;
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public User(String firstName, String lastName, String email, String password) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-    }
-
-    public User(String userName, String firstName, String lastName, String email, String password, String role) {
-        this.userName = userName;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.role = role;
-    }
+    @Column
+    private String createDate;
+    @Column
+    private String lastVisit;
 
     public User() {
     }
-    public String getPassword() {
-        return password;
+
+    public User(String userName,  String email, String sex, String password, String role, String createDate, String path) {
+        this.userName = userName;
+        this.email = email;
+        this.sex = sex;
+        this.password = password;
+        this.role = role;
+        this.createDate = createDate;
+        this.path = path;
     }
 
-    public void setPassword(String password) {
+    public User(Integer id, String userName, String email, String sex, String password, String role, String path, String createDate, String lastVisit) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.sex = sex;
         this.password = password;
+        this.role = role;
+        this.path = path;
+        this.createDate = createDate;
+        this.lastVisit = lastVisit;
     }
 
     public Integer getId() {
@@ -75,30 +59,6 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -107,17 +67,75 @@ public class User {
         this.userName = userName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getLastVisit() {
+        return lastVisit;
+    }
+
+    public void setLastVisit(String lastVisit) {
+        this.lastVisit = lastVisit;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", sex='" + sex + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", path='" + path + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", lastVisit='" + lastVisit + '\'' +
                 '}';
     }
 }

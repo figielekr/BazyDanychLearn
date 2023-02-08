@@ -1,0 +1,53 @@
+*{
+    font-family: Montserrat, sans-serif;
+}
+main.add_Article{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 50px;
+}
+section{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.title{
+    width: 800px;
+    height: 40px;
+    margin-bottom: 20px;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.title p{
+    font-size: 20px;
+}
+.addArticle{
+    width: 800px;
+    height: 300px;
+    background-color: gray;
+    padding: 40px 20px;
+    border-radius: 5px;
+
+}
+.addArticle_info{
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 25% 65%;
+    grid-template-rows: 25px 30px ;
+    gap: 8px;
+}
+.addArticle_info p{
+    padding: 0 5px;
+}
+.input_file_dalej{
+    width: 87px;
+}
+.input_file.choose_photo{
+    width: 100%;
+}

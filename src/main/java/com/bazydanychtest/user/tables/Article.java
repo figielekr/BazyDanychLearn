@@ -1,6 +1,7 @@
 package com.bazydanychtest.user.tables;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 /*
 import org.hibernate.annotations.CreationTimestamp;
 */
@@ -21,27 +22,30 @@ public class Article {
     private Integer likes;
     @Column
     private Integer dislikes;
-    /*@Column
-    @CreationTimestamp
-    private Timestamp createDate;*/
+    @Column
+    private String path;
+    @Column
+    private String authorPath;
 
-/*
-    @CreationTimestamp
-*/
-@Column
+    @Column
     private String createDate;
+    @Column
+    private String createTime;
 
+    public Article() {
+    }
 
-    public Article( String author, String title, Integer likes, Integer dislikes, String createDate) {
+    public Article(String author, String title, Integer likes, Integer dislikes, String path, String authorPath, String createDate, String createTime) {
         this.author = author;
         this.title = title;
         this.likes = likes;
         this.dislikes = dislikes;
+        this.path = path;
+        this.authorPath = authorPath;
         this.createDate = createDate;
+        this.createTime = createTime;
     }
 
-    public Article() {
-    }
     public Integer getId() {
         return id;
     }
@@ -82,6 +86,21 @@ public class Article {
         this.dislikes = dislikes;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getAuthorPath() {
+        return authorPath;
+    }
+
+    public void setAuthorPath(String authorPath) {
+        this.authorPath = authorPath;
+    }
 
     public String getCreateDate() {
         return createDate;
@@ -89,6 +108,14 @@ public class Article {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -99,7 +126,10 @@ public class Article {
                 ", title='" + title + '\'' +
                 ", likes=" + likes +
                 ", dislikes=" + dislikes +
+                ", path='" + path + '\'' +
+                ", authorPath='" + authorPath + '\'' +
                 ", createDate='" + createDate + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

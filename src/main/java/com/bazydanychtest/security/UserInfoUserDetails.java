@@ -12,19 +12,17 @@ import java.util.stream.Collectors;
 
 public class UserInfoUserDetails implements UserDetails {
 
-    private String firstName;
     private String userName;
-    private String lastName;
     private String password;
     private String email;
+    private String path;
     private List<GrantedAuthority> authorities;
 
     public UserInfoUserDetails(User user) {
-        firstName = user.getFirstName();
-        lastName = user.getLastName();
         userName = user.getUserName();
         password = user.getPassword();
         email = user.getEmail();
+        path = user.getPath();
         authorities = Arrays.stream(user.getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());

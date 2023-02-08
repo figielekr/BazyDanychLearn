@@ -1,0 +1,194 @@
+.sign_up_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+}
+.register{
+    display: flex;
+    background: #787676FF;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 450px;
+    max-width: 450px;
+    height: 250px;
+    flex-basis: 25%;
+    padding: 15px 25px;
+}
+.errors{
+    height: 20px;
+    width: 90%;
+}
+::-webkit-input-placeholder {
+    color:transparent;  /*chrome*/
+}
+::-moz-placeholder {  /* Firefox 19+ */
+    color:transparent;
+}
+.return{
+    font-size: 15px;
+}
+input{
+    position: relative;
+    display: flex;
+    height: 25px;
+    /*margin-bottom: -15px;*/
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 5px;
+    outline: none;
+    transition: .3s;
+    width: 173px;
+    color: #ab9f9f;
+    padding-left: 7px;
+}
+.sex_select{
+    width: 173px;
+    background-color: #787676FF;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 5px;
+    padding: 0 5px;
+    color: #ab9f9f;
+    font-family: Montserrat, sans-serif;
+    outline: none;
+}
+.button-create{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+label{
+    position: absolute;
+    font-family: Montserrat, sans-serif;
+    font-size: 15px;
+    margin: 5px;
+    color: #ab9f9f;
+    transform: translate(7px , -28px);
+    transition: .3s;
+    pointer-events: none;
+}
+/*.e-mail{
+    position: absolute;
+    transform: translate(7px, -11px);
+}*/
+
+input:focus~label,
+input:valid~label{
+    transform: translate(14px, -35px);
+    opacity: 1;
+    font-size: 9px;
+    background: #787676FF;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top: transparent;
+    border-bottom: transparent;
+    padding: 0 5px;
+}
+input:focus,
+input:valid{
+    background-color: #787676FF;
+    /*background-color: white;*/
+    color: #ab9f9f;
+}
+/*.e-mail.active{
+    position: absolute;
+    transform: translate(-65px, -11px);
+}*/
+a{
+    margin-top: -10px;
+}
+.button-create button{
+    background: #787676FF;
+    outline: none;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 5px;
+    width: 173px;
+    height: 24px;
+    margin: 10px;
+    transition: .3s;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ab9f9f;
+}
+button:hover{
+    color: white;
+
+}
+.button-create button:hover{
+    background-color: #5b5b5b;
+    border-color: #5b5b5b;
+}
+.button-create button:active{
+    background-color: #4d4d4d;
+    border-color: #4d4d4d;
+}
+p{
+    display: flex;
+    justify-content: center;
+    margin-top: -15px;
+    font-family: 'Montserrat', sans-serif;
+    color: blue;
+    font-size: 16px;
+}
+.return{
+    display: flex;
+    margin-top: -5px;
+    font-family: 'Montserrat', sans-serif;
+}
+.inputs{
+    display: flex;
+    justify-content: center;
+    flex: 5;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 95%;
+}
+.photo-part{
+    position: relative;
+    display: flex;
+    flex: 2;
+    height: 86%;
+    margin-left: 16px;
+
+}
+.face{
+    position: absolute;
+    width: 110%;
+    aspect-ratio: 1/1;
+    opacity: .7;
+    border-radius: 50%;
+    background-image: url("../images/non-gender.jpg");
+    transition: .2s;
+    box-shadow: 2px 4px 13px #2a2a2a;
+}
+.face.non-gender{
+    opacity: 0;
+    transform: scale(1,0);
+}
+.face.non-gender.active{
+    opacity: .7;
+    transition-delay: .2s;
+    transform:scale(1);
+}
+.face.man{
+    /*display: none;*/
+    opacity: 0;
+    transform:  scale(1,0);
+
+}
+.face.woman{
+    opacity: 0;
+    transform: scale(1,0);
+}
+.face.woman.active{
+    opacity: .7;
+    transition-delay: .2s;
+    transform: scale(1);
+}
+.face.man.active{
+    opacity: .7;
+    transition-delay: .2s;
+    transform: scale(1);
+}
+

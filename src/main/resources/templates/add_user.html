@@ -1,36 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+  <link rel="stylesheet" href="./css/afterlogin.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/profile.css">
+  <link rel="stylesheet" href="./css/article.css">
+  <link rel="stylesheet" href="./css/addArticle.css">
+  <link rel="stylesheet" href="./css/styles_signup.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/28be9a9148.js" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
-  <title>lol</title>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>navbarV</title>
 </head>
+
 <body>
+<div lang="en" th:replace="fragments/header"> </div>
 
-<form th:align="center" th:action="@{/add_user_create}"  method="post">
-  <p>Wypełnij dane</p>
-  <div>
-    <label> username
-      <input type="text" th:name="username"> <br>
-    </label>
-    <label> firstname
-      <input type="text" th:name="firstname"> <br>
-    </label>
-    <label> lastname
-      <input type="text" th:name="lastname"><br>
-    </label>
-    <label> email
-      <input type="text" th:name="email" ><br>
-    </label>
-    <label> role
-      <input type="text" th:name="role"><br>
-    </label>
-    <label> password
-      <input type="password" th:name="password"><br>
-    </label>
-    <button>submit</button>
+  <div class="sign_up_container">
+    <form th:action="@{/add_user_create}" method="post" enctype="multipart/form-data" autocomplete="off">
+      <div class="register">
+        <div class="photo-part">
+          <img class="face non-gender active" src="./images/non-gender.jpg">
+          <img class="face man" src="./images/man.jpg">
+          <img class="face woman" src="./images/woman.jpg">
+          <div class="non-gender"></div>
+          <div class="man"></div>
+          <div class="woman"></div>
+        </div>
+        <div class="inputs">
+          <div class="username-container">
+            <input type="text" required class="username" name="username" placeholder="username_holder">  <!--zeby input byl valid trzeba -> type="text" required-->
+            <label>Username</label>
+          </div>
+          <div class="password-container">
+            <input type="password" required class="password" name="password" placeholder="pwd_holder">
+            <label>Password</label>
+          </div>
+          <div class="mail-container">
+            <input type="email" required class="mail" name="email" placeholder="mail_holder">
+            <label class="e-mail">e-mail</label>
+          </div>
+          <select class="sex_select" name="sex" id="gender" onchange="getSelectedValue()">
+            <option value="woman" >Female</option>
+            <option value="man" >Male</option>
+            <option  value="non-gender" selected="selected">Choose sex</option>
+          </select>
+          <div class="button-create"> <button name="submit">Create account!</button></div>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
-<div lang="en" th:replace="fragments/footer"> </div>
-
 </body>
+<script>
+  const non_gender = document.querySelector('.non-gender');
+  const man = document.querySelector('.man');
+  const woman = document.querySelector('.woman');
+
+  function getSelectedValue(){
+    const selectedValue = document.getElementById('gender').value;
+    console.log(selectedValue);
+    non_gender.classList.remove('active');
+    console.log(non_gender);
+    if (selectedValue==='man'){
+      non_gender.classList.remove('active');
+      woman.classList.remove('active');
+      man.classList.add('active');
+    }
+    else if (selectedValue==='woman'){
+      woman.classList.add('active');
+      non_gender.classList.remove('active');
+      man.classList.remove('active');
+    }
+    else if (selectedValue==='non-gender'){
+      non_gender.classList.add('active');
+      woman.classList.remove('active');
+      man.classList.remove('active');
+    }
+  }
+</script>
+
 </html>
