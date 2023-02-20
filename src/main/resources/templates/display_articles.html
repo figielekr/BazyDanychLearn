@@ -40,8 +40,6 @@
                     </div>
                 </div>
                 <div class="image">
-                    <!--<img th:src="'./images/'+ ${article.path}" alt="">-->
-                    <img src="../../resources/uploads/ninja.jpg" alt="">
                     <img th:src="'../uploads/' + ${article.path}" alt="">
                 </div>
                 <div class="footer">
@@ -64,18 +62,21 @@
                         <a href="#" class="comments_icon"><i class="fas fa-angle-double-up"></i></a>
                     </div>
                 </div>
-                <div th:id="'comment_section_' + ${article.id}" class="comment_section">
-                    <div class="comment_container">
-                        <div style='width:0;height:0'>&nbsp;</div>
-                        <div class="comment_header">
-                            <a href="#">AUTOR</a> <span> • TIME</span>
-                            <div class="comment_votes">
-                                <span>LAJKI <a href="#"><i class="fa-solid fa-thumbs-up"></i></a></span>
+                <div th:id="'comment_' + ${article.id}" class="comment">
+                    <div th:id="'comment_section_' + ${article.id}" class="comment_section">
+                        <div class="comment_container">
+                            <div style='width:0;height:0'>&nbsp;</div>
+                            <div class="comment_header">
+                                <a href="#">AUTOR</a> <span> • TIME</span>
+                                <div class="comment_votes">
+                                    <span>LAJKI <a href="#"><i class="fa-solid fa-thumbs-up"></i></a></span>
+                                </div>
+                            </div>
+                            <div class="comment">
+                                <p>COMMENT</p>
                             </div>
                         </div>
-                        <div class="comment">
-                            <p>COMMENT</p>
-                        </div>
+
                     </div>
                     <div class="comment_container input_comment_container">
                         <div style='width:0;height:0'>&nbsp;</div>
@@ -84,11 +85,11 @@
                         </div>
                         <div style='width:0;height:0'>&nbsp;</div>
                         <!--<form th:action="@{/add_comment_from_article/} + ${article.id}" method="POST">-->
-                            <div class="comment input_container">
-                                <!--<input class="comment_input" type="text">-->
-                                <textarea th:id="'content-' + ${article.id}" style="resize: none" class="text_comment_field" cols="100" rows="8" name="comment"></textarea>
-                            </div>
-                            <button class="button_comment" name="addCommentButton" th:onclick="addComment([[${article.id}]])" >Zatwierdź komentarz</button>
+                        <div class="comment input_container">
+                            <!--<input class="comment_input" type="text">-->
+                            <textarea th:id="'content-' + ${article.id}" style="resize: none" class="text_comment_field" cols="100" rows="8" name="comment"></textarea>
+                        </div>
+                        <button class="button_comment" name="addCommentButton" th:onclick="addComment([[${article.id}]])" >Zatwierdź komentarz</button>
                         <!--</form>-->
                     </div>
                 </div>
@@ -105,14 +106,15 @@
         //comment['comment2'] = document.getElementById('content2').value;
         console.log(comment);
         console.log(JSON.stringify(comment));
-        await fetch("http://localhost:8080/ajaxTestRequest/" + id,{
+        await fetch("http://localhost:8080/add_comment_from_article/" + id,{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
             body:JSON.stringify(comment)
         }).then((res)=>res.json()).then(response => console.log(response)).then(getData)
-
+            getData(id);
+        document.getElementById('content-'+id).value = '';
     }
     function getData(id){
         fetch("http://localhost:8080/comment/" + id).then(
@@ -121,10 +123,13 @@
             var tmpData = "";
             console.log(response);
             response.forEach((comments)=>{
-                //tmpData+="<tr>"
-                tmpData+="<div class='dsfdsfds'>"+comments.comment+" "+comments.author+"</div>";
-                //tmpData+="<div>"+comments.author+"</div>";
-                //tmpData+="</tr>"
+               // tmpData+="<div class = \"comment_container\"";
+                tmpData+="<div class=\"comment_container\">"/*+" "+comments.author*/;
+                tmpData+="<div style = 'width:0;height:0' >"+ '&nbsp;' + "</div>";
+                tmpData+="             <div class=\"comment_header\">  <a href=\"#\">" +comments.author+ "</a> <span> • " + comments.createDate +"</span>  <div class=\"comment_votes\"> \n" +
+                    "                 <span>"+ comments.likes + " " +"<a href=\"/comment_likes/"+comments.id+"\"><i class=\"fa-solid fa-thumbs-up\"></i></a></span>       </div>   </div>"
+                tmpData+= "<div class=\"comment\" <p>"+ comments.comment+"</p> </div>";
+                tmpData+="</div>";
             })
             document.getElementById("comment_section_" + id).innerHTML = tmpData;
         })

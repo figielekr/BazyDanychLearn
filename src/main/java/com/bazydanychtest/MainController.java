@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,7 @@ public class MainController {
     @Autowired private LikesRepository repoLikes;
     @Autowired private FileUploadService fileUploadService;
     @Autowired private ArticleService articleService;
+    @Autowired private Environment environment;
 
     @GetMapping("")
     public String showHomePage() {
@@ -83,6 +85,8 @@ public class MainController {
         model.addAttribute("user", repo.findByUserName(currentName));
         model.addAttribute("comments", repoComment.findByAuthor(currentName));
         model.addAttribute("articles", repoArticle.findByAuthor(currentName));
+        final String lol = environment.getProperty("filesUpload");
+        System.out.println(lol);
 
         return "profile";
     }
@@ -113,7 +117,7 @@ public class MainController {
     }
     @RequestMapping(value = "add_comment_from_article/{id}", method = RequestMethod.POST)
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'user', 'admin')")
+    //@PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'user', 'admin')")
     public Comment  addCommentFromArticle(
             @PathVariable int id,
             @RequestBody ObjectNode commentContent
@@ -189,7 +193,7 @@ public class MainController {
         //return "article";
         return "index";
     }
-    @GetMapping("/likes/{id}")
+    /*@GetMapping("/likes/{id}")
     public String addLike (@PathVariable int id, Model model){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         if (repoLikes.existsByArticleIDAndUsername(id, name)){
@@ -198,6 +202,23 @@ public class MainController {
         } else {
             Likes like = new Likes(name, id, commentService.dateCurrent() + " "+ commentService.timeCurrent());
             repoLikes.save(like);
+        }
+
+        return "redirect:/display_articles";
+
+    }*/
+    @GetMapping("/comment_likes/{id}")
+    public String addLike (@PathVariable int id, Model model){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (repoLikes.existsByArticleIDAndUsername(id, name)){
+            repoLikes.deleteById(id);
+
+        } else {
+            Optional<Comment> comment = repoComment.findById(id);
+            int amount = comment.get().getLikes()+1;
+            comment.get().setLikes(amount);
+            repoComment.save(comment.get());
+            System.out.println(repoComment.findById(id));
         }
 
         return "redirect:/display_articles";
@@ -221,5 +242,6 @@ public class MainController {
     public String lol (){
         return "ajaxtest";
     }
+
 
 }
