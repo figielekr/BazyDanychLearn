@@ -24,6 +24,8 @@ class BazyDanychTestApplicationTests {
 	@Autowired private UserRepository repo;
 	@Autowired private CommentRepository repoComment;
 	@Autowired private CommentService serviceComment;
+	@Autowired private ArticleRepository articleRepository;
+	@Autowired private ArticleLikesRepository articleLikesRepository;
 
 	@Test
 	public void addNewUSer() {
@@ -78,4 +80,11 @@ class BazyDanychTestApplicationTests {
 		System.out.println(object);
 
 	}
+//	@Test
+//	public void testConvert(){
+//		Optional<Article> article = articleRepository.findById(1);
+//		Boolean isLikes = articleLikesRepository.existsByArticleIDAndUsername()
+//				//if(articleLikes.existsByArticleIDAndUsername())
+//		//ArticleExtra articleExtra = new ArticleExtra(article.get().getId(), article.get().getAuthor(), article.get().getTitle(),article.get().getLikes(), article.get().getPath(), article.get().getAuthorPath(), article.get().getCreateDate(), article.get().getCreateTime(), article.get().);
+//	}
 }

@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LikesRepository extends JpaRepository<Likes, Integer> {
+public interface ArticleLikesRepository extends JpaRepository<ArticleLikes, Integer> {
 
-    List<Likes> findByUsername(String name);
+    List<ArticleLikes> findByUsername(String name);
 
     List findByArticleIDAndUsername(int id, String name);
 

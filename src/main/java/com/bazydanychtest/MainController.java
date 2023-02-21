@@ -1,27 +1,16 @@
 package com.bazydanychtest;
 
-import com.bazydanychtest.security.UserInfoUserDetails;
 import com.bazydanychtest.user.tables.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -41,11 +30,10 @@ public class MainController {
     @Autowired private ArticleRepository repoArticle;
     @Autowired private CommentRepository repoComment;
     @Autowired private CommentService commentService;
-    @Autowired private LikesRepository repoLikes;
+    @Autowired private ArticleLikesRepository repoArticleLikes;
     @Autowired private FileUploadService fileUploadService;
     @Autowired private ArticleService articleService;
     @Autowired private Environment environment;
-
     @GetMapping("")
     public String showHomePage() {
         return "index";
@@ -147,9 +135,16 @@ public class MainController {
         final String currentName = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(currentName);
         model.addAttribute("currentUser", currentName);
-        model.addAttribute("articles", repoArticle.findAll());
+        //model.addAttribute("articles", repoArticle.findAll());
         model.addAttribute("comments", commentService.findAll());
-        model.addAttribute("likes", repoLikes.findByUsername(currentName));
+        model.addAttribute("likes", repoArticleLikes.findByUsername(currentName));
+        System.out.println(repoArticleLikes.findByUsername(currentName));
+        List<ArticleExtra> articles = new ArrayList<ArticleExtra>();
+        for (int i=1; i<=3; i++){
+            articles.add(articleService.getArticles(i, currentName));
+        }
+        System.out.println(articles);
+        model.addAttribute("articles", articles);
         //model.addAttribute("articles", articleService.findArticleWithSorting("id"));
         //model.addAttribute("articles", articleService.findArticlesWithPagination(id, 5));
         //model.addAttribute("articles", repoArticle.findAll(Sort.by(Sort.Direction.ASC, )));
@@ -193,33 +188,42 @@ public class MainController {
         //return "article";
         return "index";
     }
-    /*@GetMapping("/likes/{id}")
-    public String addLike (@PathVariable int id, Model model){
+    @GetMapping("/article_likes/{id}")
+    public @ResponseBody Integer addArticleLike (@PathVariable int id){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (repoLikes.existsByArticleIDAndUsername(id, name)){
-            repoLikes.deleteById(id);
-
+        Optional<Article> article = repoArticle.findById(id);
+        int likes = article.get().getLikes();
+        if (repoArticleLikes.existsByArticleIDAndUsername(id, name)){
+            repoArticleLikes.deleteById(id);
+            likes -=1;
+            article.get().setLikes(likes);
+            repoArticle.save(article.get());
+            return likes;
         } else {
-            Likes like = new Likes(name, id, commentService.dateCurrent() + " "+ commentService.timeCurrent());
-            repoLikes.save(like);
+            ArticleLikes like = new ArticleLikes(name, id, commentService.dateCurrent() + " "+ commentService.timeCurrent());
+            repoArticleLikes.save(like);
+            System.out.println(like);
+            likes +=1;
+            article.get().setLikes(likes);
+            repoArticle.save(article.get());
+            return likes;
         }
+        //return null;
 
-        return "redirect:/display_articles";
-
-    }*/
+    }
     @GetMapping("/comment_likes/{id}")
-    public String addLike (@PathVariable int id, Model model){
+    public String addCommentLike (@PathVariable int id, Model model){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (repoLikes.existsByArticleIDAndUsername(id, name)){
-            repoLikes.deleteById(id);
-
-        } else {
-            Optional<Comment> comment = repoComment.findById(id);
-            int amount = comment.get().getLikes()+1;
-            comment.get().setLikes(amount);
-            repoComment.save(comment.get());
-            System.out.println(repoComment.findById(id));
-        }
+//        if (repoLikes.existsByArticleIDAndUsername(id, name)){
+//            repoLikes.deleteById(id);
+//
+//        } else {
+//            Optional<Comment> comment = repoComment.findById(id);
+//            int amount = comment.get().getLikes()+1;
+//            comment.get().setLikes(amount);
+//            repoComment.save(comment.get());
+//            System.out.println(repoComment.findById(id));
+//        }
 
         return "redirect:/display_articles";
 
@@ -242,6 +246,8 @@ public class MainController {
     public String lol (){
         return "ajaxtest";
     }
+    //@GetMapping("hasVoted")
+    //public boolean
 
 
 }

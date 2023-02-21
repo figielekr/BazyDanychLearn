@@ -35,8 +35,11 @@
                         <span id="article_info_span"><span th:text="${article.author}+ ' '"></span><a href="#">[zgłoś duplikat]</a></span>
                     </div>
                     <div class="votes">
-                        <span id="votes_span" class="vote_count" th:text="${article.likes}-${article.dislikes}"></span>
-                        <a href="#"><img src="./images/thumb.png" alt=""></a>
+                        <span th:id="'header-votes-' + ${article.id}" class="vote_count" th:text="${article.likes}"></span>
+<!--                        <a href="#"><img src="./images/thumb.png" alt=""></a>-->
+                        <p class="hover" th:onclick="articleVote([[${article.id}]])"><i th:id="'thumb-' + ${article.id}"  class="fa-solid fa-thumbs-up"
+                                                                                   th:classappend="${article.liked} ? voted"></i></p>
+
                     </div>
                 </div>
                 <div class="image">
@@ -52,33 +55,23 @@
                         <a href="#" class="add_favourite"><i class="fas fa-link copy-link"></i></a>
                     </div>
                     <div class="votes">
-                        <span class="vote_count" th:text="${article.likes}-${article.dislikes}"></span>
-                        <a href="#"><img src="./images/thumb.png" alt=""></a>
+                        <span th:id="'footer-votes-' + ${article.id}" class="vote_count" th:text="${article.likes}"></span>
+<!--                        <a href="#"><img src="./images/thumb.png" alt=""></a>-->
+                            <p class="hover" th:onclick="articleVote([[${article.id}]])"><i th:id="'footer-thumb-' + ${article.id}"
+                                           class="fa-solid fa-thumbs-up" th:classappend="${article.liked} ? voted"></i></p>
                     </div>
                     <div style='width:0;height:0'>&nbsp;</div>
 
-                    <div id="toggle_comment" class="comments_icon" th:onclick="getData([[${article.id}]])">
-                        <a href="#" class="comments_icon"><i class="fa-solid fa-comments"></i></a>
-                        <a href="#" class="comments_icon"><i class="fas fa-angle-double-up"></i></a>
+                    <div id="toggle_comment" class="comments_icon hover" th:onclick="getData([[${article.id}]])">
+                        <p class="comments_icon"><i class="fa-solid fa-comments"></i></p>
+                        <p class="comments_icon"><i th:id="'comment-arrow-' + ${article.id}" class="fas fa-angle-double-up"></i></p>
                     </div>
                 </div>
                 <div th:id="'comment_' + ${article.id}" class="comment">
-                    <div th:id="'comment_section_' + ${article.id}" class="comment_section">
-                        <div class="comment_container">
-                            <div style='width:0;height:0'>&nbsp;</div>
-                            <div class="comment_header">
-                                <a href="#">AUTOR</a> <span> • TIME</span>
-                                <div class="comment_votes">
-                                    <span>LAJKI <a href="#"><i class="fa-solid fa-thumbs-up"></i></a></span>
-                                </div>
-                            </div>
-                            <div class="comment">
-                                <p>COMMENT</p>
-                            </div>
-                        </div>
+                    <div th:id="'comment_section_' + ${article.id}" class="comment_section none">
 
                     </div>
-                    <div class="comment_container input_comment_container">
+                    <div th:if="${currentUser} != anonymousUser" class="comment_container input_comment_container">
                         <div style='width:0;height:0'>&nbsp;</div>
                         <div class="comment_header add_comment ">
                             <span>Więcej niż 3 znaki</span>
@@ -92,6 +85,10 @@
                         <button class="button_comment" name="addCommentButton" th:onclick="addComment([[${article.id}]])" >Zatwierdź komentarz</button>
                         <!--</form>-->
                     </div>
+                    <div th:if="${currentUser} == anonymousUser" class="not_logged">
+                        <p>Zaloguj się, aby dodać komentarz.</p>
+                        <!--<p th:if="${article.liked} == true">gfdgdfgfd</p>-->
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,6 +97,17 @@
 </main>
 </body>
 <script>
+    function displayComments(id){
+        document.getElementById('comment_section_'+id).classList.toggle('none');
+        document.getElementById('comment-arrow-'+id).classList.toggle('rotated');
+    }
+
+
+    function voted(id){
+        document.getElementById('thumb-'+id).classList.toggle('voted');
+        document.getElementById('footer-thumb-'+id).classList.toggle('voted');
+    }
+
     async function addComment(id){
         let comment= {};
         comment['comment'] = document.getElementById('content-' + id).value;
@@ -112,9 +120,24 @@
                 "Content-Type":"application/json"
             },
             body:JSON.stringify(comment)
-        }).then((res)=>res.json()).then(response => console.log(response)).then(getData)
+        }).then((res)=>res.json()).then(response => {
+            console.log(response)
+        }).then(getData)
             getData(id);
         document.getElementById('content-'+id).value = '';
+    }
+    async function articleVote(id){
+        await fetch("/article_likes/"+id)
+            .then((res) => res.json()
+                //res.json();
+            ).then((data) => {
+                console.log(data);
+                document.getElementById('header-votes-'+id).innerHTML = data;
+                document.getElementById('footer-votes-'+id).innerHTML = data;
+            } )
+
+
+        voted(id);
     }
     function getData(id){
         fetch("http://localhost:8080/comment/" + id).then(
@@ -133,6 +156,59 @@
             })
             document.getElementById("comment_section_" + id).innerHTML = tmpData;
         })
+        displayComments(id);
     }
+    const mobileNav = document.querySelector('.menu');
+    const burgerButton = document.querySelector('.hamburger-menu');
+
+
+
+
+    burgerButton.addEventListener('click', function(){
+        mobileNav.classList.toggle('active');
+        burgerButton.classList.toggle('active');
+    })
+
+    /*let likes = document.getElementById('thumb-1');
+    likes.addEventListener('click', () => {
+        console.log('lol');
+        likes.classList.toggle('voted');
+    })*/
+
+    // const thumb = document.querySelectorAll(".fa-thumbs-up");
+    //
+    // [].forEach.call(thumb, el =>{
+    //     el.addEventListener('click', () => {
+    //         el.classList.toggle('voted');
+    //         //console.log(el.closest('.fa-thumbs-up'));
+    //     })
+    // })
+
+
+
+
+    const nav_link = document.querySelectorAll(".nav-link");
+    const dropdown_test = document.querySelectorAll(".dropdown-test");
+    const deep_link = document.querySelectorAll(".deep-link");
+    const submenu_link = document.querySelectorAll(".submenu-link");
+
+    [].forEach.call(deep_link, el => {      //dla kazdego elementu dropdown_test
+        el.addEventListener('click', () => {
+            el.closest('.submenu-link').classList.toggle('active');
+            /*const index = [...child.parentElement.children].indexOf(child);*/
+            /*console.log(index);*/
+            /*submenu_link[index].classList.toggle('active');*/
+        })
+
+    });
+
+    [].forEach.call(dropdown_test, el => {      //dla kazdego elementu dropdown_test
+        el.addEventListener('click', () => {
+            const child = el.closest('.nav-link');
+            const index = [...child.parentElement.children].indexOf(child);
+            /*        console.log(index);*/
+            nav_link[index].classList.toggle('active');
+        })
+    })
 </script>
 </html>

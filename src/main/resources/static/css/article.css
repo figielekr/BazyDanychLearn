@@ -71,12 +71,20 @@ a {
     font-size: 38px;
     font-weight: 500;
     text-shadow: 1px 1px 3px var(--box_shadow_background);
+    transform: translateX(-5px);
+}
+.votes .fa-thumbs-up{
+    color: #2c2b2b;
+    font-size: 36px;
 }
 .votes img{
     aspect-ratio: 1/1;
     width: 46px;
     transform: translate(0, 8px);
-    filter: drop-shadow(2px 2px 2px #222);
+    filter: grayscale(100%);
+}
+.voted{
+    filter: grayscale(100%);
 }
 .image {
     width: 98%;
@@ -109,6 +117,20 @@ a {
     left: 5px;
     top: 3px;
 }
+.footer .fa-thumbs-up{
+    color: var(--comment_header_author);
+    font-size: 23px;
+}
+
+.fa-thumbs-up{
+    transition: .3s;
+}
+.voted{
+    transform: rotate(180deg);
+}
+.hover:hover{
+    cursor: pointer;
+}
 .social{
     padding: 4px;
 }
@@ -116,6 +138,13 @@ a {
 .social .fas{
     color: grey;
     font-size: 22px;
+}
+.fa-angle-double-up{
+    transform: rotate(180deg);
+    transition: .3s;
+}
+.fa-angle-double-up.rotated{
+    transform: rotate(0deg);
 }
 .footer .votes{
     display: flex;

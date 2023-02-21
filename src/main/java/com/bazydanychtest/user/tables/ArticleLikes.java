@@ -6,8 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "likes")
-public class Likes {
+@Table(name = "article_likes")
+public class ArticleLikes {
 
     @Column (nullable = false)
     String username;
@@ -41,12 +41,21 @@ public class Likes {
         this.likeTime = likeTime;
     }
 
-    public Likes(String username, Integer articleID, String likeTime) {
+    public ArticleLikes(String username, Integer articleID, String likeTime) {
         this.username = username;
         this.articleID = articleID;
         this.likeTime = likeTime;
     }
 
-    public Likes() {
+    public ArticleLikes() {
+    }
+
+    @Override
+    public String toString() {
+        return "Likes{" +
+                "username='" + username + '\'' +
+                ", articleID=" + articleID +
+                ", likeTime='" + likeTime + '\'' +
+                '}';
     }
 }
