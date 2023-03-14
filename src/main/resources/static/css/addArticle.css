@@ -13,6 +13,9 @@ section{
     flex-wrap: wrap;
     width: 80%;
 }
+.add_article_section{
+    max-width: 1200px;
+}
 .title{
     width: 800px;
     height: 40px;

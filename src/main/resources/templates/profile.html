@@ -1,11 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <link rel="stylesheet" href="./css/afterlogin.css">
-  <link rel="stylesheet" href="./css/styles.css">
-  <link rel="stylesheet" href="./css/profile.css">
-  <link rel="stylesheet" href="./css/article.css">
-  <link rel="stylesheet" href="./css/addArticle.css">
+  <link rel="stylesheet" href="/css/afterlogin.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="stylesheet" href="/css/article.css">
+  <link rel="stylesheet" href="/css/addArticle.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,16 +22,22 @@
 <section class="profile">
   <div class="profile_nav">
     <ul>
-      <li><a href="#">Profil</a> </li>
-      <li><a href="#">Tematy</a> </li>
-      <li><a class="last" href="#">Komentarze</a> </li>
+      <li><a id="profile" href="#">Profil</a> </li>
+      <li><a id="topics" href="#">Tematy</a> </li>
+      <li><a id="comments" class="last" href="#">Komentarze</a> </li>
+<!--      <p th:text="${sessionTimeLeft}"></p>-->
     </ul>
+    <div id="session_contain" class="session_container">
+<!--      <p th:text="${minutes}"></p>-->
+<!--      <p>:</p>-->
+<!--      <p th:text="${seconds}"></p>-->
+    </div>
   </div>
 
-  <div class="profile_info">
+  <div id="profile_info" class="profile_info info ">
     <div class="profile_info_avatar">
       <div class="profile_avatar">
-        <img th:src="@{${'/images/'+user.get().path}}" alt="">
+        <img th:src="@{${'../uploads/'+user.get().path}}" alt="">
       </div>
     </div>
 
@@ -46,25 +52,97 @@
       <p>E-mail</p>
       <b><p th:text="${user.get().email}"></p></b>
       <p>Komentarzy</p>
-      <p></p>
+      <b><p th:text="${comments.size()}"></p></b>
+      <p>Artykułów</p>
+      <b><p th:text="${articles.size()}"></p></b>
       <p>Płeć</p>
       <b><p th:text="${user.get().sex}"></p></b>
       <p>Data dołączenia</p>
       <b><p th:text="${user.get().getCreateDate()}"></p></b>
       <p>Zmien zdjecie</p>
-      <form action="includes/uploadFile.php" method='POST' enctype="multipart/form-data">
+      <form th:action="@{/image/upload}" method='POST' enctype="multipart/form-data">
         <input type="file" name="file"/>
         <input type="submit" name="submit" value=" Dalej ">
       </form>
     </div>
   </div>
-
+  <div id="profile_articles" class="profile_articles info none">
+    <div class="header article_info_row">
+      <p>Tytuł</p>
+      <p>Lajki</p>
+      <p>Komentarzy</p>
+      <p>Data utworzenia</p>
+    </div>
+    <div class="article_info_row" th:each="article : ${articles}">
+      <a th:href="@{/{articleID}(articleID=${article.id})}" th:text="${article.title}"></a>
+      <p th:text="${article.likes}"></p>
+      <p th:text="${article.columnAmount}"></p>
+      <p th:text="${article.createDate} +' '+ ${article.createTime}"></p>
+<!--      <p th:text="${article}"></p>-->
+    </div>
+  </div>
+  <div id="profile_comments" class="profile_comments info none">
+    <div class="header article_info_row">
+      <p>Artykuł</p>
+      <p>Lajki</p>
+      <p>Treść</p>
+      <p>Data utworzenia</p>
+    </div>
+    <div class="article_info_row" th:each="comment : ${comments}">
+      <a th:href="@{/{articleID}(articleID=${comment.articleID})}"  th:text="${comment.articleTitle}" ></a>
+      <p th:text="${comment.likes}"></p>
+      <p th:text="${comment.comment}"></p>
+      <p th:text="${comment.createDate} +' '+ ${comment.createTime}"></p>
+      <!--      <p th:text="${article}"></p>-->
+    </div>
+  </div>
 
 
 </section>
 
 
   </body>
+<script>
+  let sessionTimer = document.getElementById('session_contain');
+  window.onload = function (){
+    const time = [[${sessionTimeLeft}]];
+    countDown(time);
+  }
+
+  function countDown(time){
+    let countdownInterval = setInterval(function (){
+      time-=1000;
+      let minutes = Math.floor(time/1000.0/60.0);
+      let seconds = Math.floor((time/1000.0)%60.0);
+      if (seconds<10){
+        seconds = '0'+seconds;
+      }
+      sessionTimer.innerHTML = minutes+":"+seconds;
+      if(time <= 0){
+        clearInterval(countdownInterval);
+        sessionTimer.innerHTML = "Koniec sesji."
+      }
+    }, 1000);
+  }
+
+
+
+  document.getElementById("profile").addEventListener('click', () => {
+    document.querySelector('.profile_info').classList.remove('none');
+    document.querySelector('.profile_articles').classList.add('none');
+    document.querySelector('.profile_comments').classList.add('none');
+  })
+  document.getElementById("topics").addEventListener('click', () => {
+    document.querySelector('.profile_info').classList.add('none');
+    document.querySelector('.profile_articles').classList.remove('none');
+    document.querySelector('.profile_comments').classList.add('none');
+  })
+  document.getElementById("comments").addEventListener('click', () => {
+    document.querySelector('.profile_info').classList.add('none');
+    document.querySelector('.profile_articles').classList.add('none');
+    document.querySelector('.profile_comments').classList.remove('none');
+  })
+</script>
 </html>
 
 

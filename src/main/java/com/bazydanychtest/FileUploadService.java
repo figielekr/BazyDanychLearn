@@ -30,10 +30,10 @@ public class FileUploadService {
 
 
         String fileName = multipartFile.getOriginalFilename();
-        Path uploadDirectory = Paths.get("src/main/resources/static/uploads/");
-        //final String uploadLocation = getClass().getClassLoader().getResource("static/uploads").toString();
+        //Path uploadDirectory = Paths.get("src/main/resources/static/uploads/");
+        final String uploadLocation = getClass().getClassLoader().getResource("static/uploads").toString();
         //we should get rid of file:/, hence the substring
-        //final Path uploadDirectory = Paths.get(uploadLocation.substring(6, uploadLocation.length()) );
+        final Path uploadDirectory = Paths.get(uploadLocation.substring(6, uploadLocation.length()) );
         //Path uploadDirectory = Paths.get("target\\classes\\static\\uploads\\");
 
 

@@ -11,4 +11,8 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
     List<Comment> findByAuthor(String userName);
     List<Comment> findByArticleID(int id);
 
+
+    Integer countByAuthor(String currentName);
+
+    Integer countByArticleID(Integer id);
 }

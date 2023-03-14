@@ -1,11 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <link rel="stylesheet" href="./css/afterlogin.css">
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/profile.css">
-    <link rel="stylesheet" href="./css/article.css">
-    <link rel="stylesheet" href="./css/addArticle.css">
+    <link rel="stylesheet" href="/css/afterlogin.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/addArticle.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>navbarV</title>
 </head>
-<body>
+<body th:onload="pageButtonsList([[${articleSize}]])">
 <div lang="en" th:replace="fragments/header"> </div>
 <main>
     <section class="main_section">
@@ -26,19 +26,26 @@
             <div th:each="article : ${articles}" class="article-container" id="meme-id">
                 <div class="article_header" id="article_header">
                     <div class="user_avatar">
-                        <img class="avatar_img" th:src="'./images/' + ${article.authorPath}" alt="avatar">
+                        <img class="avatar_img" th:src="'/images/' + ${article.authorPath}" alt="avatar">
                     </div>
                     <div id="titleID_span" class="something">
-                        <span id="titleID" class="titleClass" th:text="${article.title}"></span>
+                        <a th:href="${article.id}"><span id="titleID" class="titleClass" th:text="${article.title}"></span></a>
                     </div>
                     <div id="article_info" class="article_info">
                         <span id="article_info_span"><span th:text="${article.author}+ ' '"></span><a href="#">[zgłoś duplikat]</a></span>
                     </div>
-                    <div class="votes">
+                    <div th:if="${currentUser} != anonymousUser" class="votes">
                         <span th:id="'header-votes-' + ${article.id}" class="vote_count" th:text="${article.likes}"></span>
 <!--                        <a href="#"><img src="./images/thumb.png" alt=""></a>-->
                         <p class="hover" th:onclick="articleVote([[${article.id}]])"><i th:id="'thumb-' + ${article.id}"  class="fa-solid fa-thumbs-up"
                                                                                    th:classappend="${article.liked} ? voted"></i></p>
+
+                    </div>
+                    <div th:if="${currentUser} == anonymousUser" class="votes">
+                        <span th:id="'header-votes-' + ${article.id}" class="vote_count" th:text="${article.likes}"></span>
+                        <!--                        <a href="#"><img src="./images/thumb.png" alt=""></a>-->
+                        <p class="hover"><i th:id="'thumb-' + ${article.id}"  class="fa-solid fa-thumbs-up"
+                                                                                        th:classappend="${article.liked} ? voted"></i></p>
 
                     </div>
                 </div>
@@ -54,11 +61,17 @@
                         <a href="#" class="add_favourite"><i class="fa-brands fa-facebook-messenger"></i></a>
                         <a href="#" class="add_favourite"><i class="fas fa-link copy-link"></i></a>
                     </div>
-                    <div class="votes">
+                    <div th:if="${currentUser} != anonymousUser" class="votes">
                         <span th:id="'footer-votes-' + ${article.id}" class="vote_count" th:text="${article.likes}"></span>
 <!--                        <a href="#"><img src="./images/thumb.png" alt=""></a>-->
                             <p class="hover" th:onclick="articleVote([[${article.id}]])"><i th:id="'footer-thumb-' + ${article.id}"
                                            class="fa-solid fa-thumbs-up" th:classappend="${article.liked} ? voted"></i></p>
+                    </div>
+                    <div th:if="${currentUser} == anonymousUser" class="votes">
+                        <span th:id="'footer-votes-' + ${article.id}" class="vote_count" th:text="${article.likes}"></span>
+                        <!--                        <a href="#"><img src="./images/thumb.png" alt=""></a>-->
+                        <p class="hover"><i th:id="'footer-thumb-' + ${article.id}"
+                                                                                        class="fa-solid fa-thumbs-up" th:classappend="${article.liked} ? voted"></i></p>
                     </div>
                     <div style='width:0;height:0'>&nbsp;</div>
 
@@ -91,18 +104,66 @@
                     </div>
                 </div>
             </div>
+            <div id="pages" class="pages"></div>
         </div>
         </div>
     </section>
 </main>
 </body>
 <script>
+    function pageButtonsList(size){
+        let space = 5;
+        const container = document.getElementById('pages');
+        let buttonNumbers = (Math.floor(size/space))
+        if(size%space >= 1) buttonNumbers+=1
+        //console.log(buttonNumbers)
+        //const buttons = [];
+        const currentPage = pageNumber();
+        //console.log(currentPage);
+        for (let i = 1 ; i<=buttonNumbers; i++){
+            const button = document.createElement("button");
+            //button.textContent = i;
+            const link = document.createElement("a");
+            link.href = "/display_articles/"+i;
+            link.textContent = i;
+            //button.appendChild(link);
+            //button.classList.add("page-button");
+            link.classList.add("page-button")
+            if (currentPage === i){
+                link.classList.add('current-page')
+            }
+            //console.log(typeof i+ " i");
+            //console.log(typeof currentPage+" currentPage");
+            container.appendChild(link);
+        }
+    }
+    function pageNumber(){
+        const regex = /\/(\d+)?$/;
+        const url = window.location.href;
+        let result = 0;
+        if(regex.test(url)){
+            let resultUrl = "";
+            resultUrl = url.match(regex)[1];
+            result = parseInt(resultUrl);
+        }
+        if(result < 1)
+        {result = 1;}
+        return result;
+    }
     function displayComments(id){
         document.getElementById('comment_section_'+id).classList.toggle('none');
         document.getElementById('comment-arrow-'+id).classList.toggle('rotated');
     }
-
-
+    async function commentVote(id){
+        await fetch("/comment_likes/"+id)
+            .then((res) => res.json()
+                //res.json();
+            ).then((data) => {
+                console.log(data);
+                document.getElementById('span-likes-'+id).innerHTML = data;
+                document.getElementById('comment-thumb-'+id).classList.toggle('true');
+            } )
+    }
     function voted(id){
         document.getElementById('thumb-'+id).classList.toggle('voted');
         document.getElementById('footer-thumb-'+id).classList.toggle('voted');
@@ -121,9 +182,11 @@
             },
             body:JSON.stringify(comment)
         }).then((res)=>res.json()).then(response => {
-            console.log(response)
-        }).then(getData)
-            getData(id);
+            //console.log(response)
+        })
+        await getComments(id);
+        document.getElementById('comment_section_'+id).classList.remove('none');
+        document.getElementById('comment-arrow-'+id).classList.add('rotated');
         document.getElementById('content-'+id).value = '';
     }
     async function articleVote(id){
@@ -139,25 +202,54 @@
 
         voted(id);
     }
-    function getData(id){
-        fetch("http://localhost:8080/comment/" + id).then(
-            (res)=>res.json()
-        ).then((response)=>{
-            var tmpData = "";
-            console.log(response);
-            response.forEach((comments)=>{
-               // tmpData+="<div class = \"comment_container\"";
-                tmpData+="<div class=\"comment_container\">"/*+" "+comments.author*/;
-                tmpData+="<div style = 'width:0;height:0' >"+ '&nbsp;' + "</div>";
-                tmpData+="             <div class=\"comment_header\">  <a href=\"#\">" +comments.author+ "</a> <span> • " + comments.createDate +"</span>  <div class=\"comment_votes\"> \n" +
-                    "                 <span>"+ comments.likes + " " +"<a href=\"/comment_likes/"+comments.id+"\"><i class=\"fa-solid fa-thumbs-up\"></i></a></span>       </div>   </div>"
-                tmpData+= "<div class=\"comment\" <p>"+ comments.comment+"</p> </div>";
-                tmpData+="</div>";
-            })
-            document.getElementById("comment_section_" + id).innerHTML = tmpData;
-        })
+    async function getData(id){
+        await getComments(id);
         displayComments(id);
     }
+
+    async function getComments(id) {
+        try {
+            const response = await fetch(`/comment/${id}`);
+            const comments = await response.json();
+
+            let tmpData = "";
+            if (comments.length > 0) {
+                comments.forEach((comment) => {
+                    tmpData += `
+          <div class="comment_container">
+            <div style="width: 0; height: 0">&nbsp;</div>
+            <div class="comment_header">
+              <a href="#">${comment.author}</a>
+              <span> • ${comment.createDate}</span>
+              <div class="comment_votes">
+                <span id="span-likes-${comment.id}">${comment.likes}</span>
+                <p onclick="commentVote(${comment.id})">
+                  <i id="comment-thumb-${comment.id}" class="fa-solid comment hover ${comment.liked} fa-thumbs-up"></i>
+                </p>
+              </div>
+            </div>
+            <div class="comment">
+              <p>${comment.comment}</p>
+            </div>
+          </div>
+        `;
+                });
+            } else {
+                tmpData += `
+        <div class="no-comment">
+          <p>Wygląda na to, że nie ma jeszcze żadnych komentarzy.</p>
+        </div>
+      `;
+            }
+
+            document.getElementById(`comment_section_${id}`).innerHTML = tmpData;
+            //displayComments(id);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
     const mobileNav = document.querySelector('.menu');
     const burgerButton = document.querySelector('.hamburger-menu');
 

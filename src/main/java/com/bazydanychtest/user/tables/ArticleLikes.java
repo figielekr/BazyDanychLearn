@@ -1,17 +1,17 @@
 package com.bazydanychtest.user.tables;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "article_likes")
 public class ArticleLikes {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    Integer id;
     @Column (nullable = false)
     String username;
-    @Id
     @Column (nullable = false)
     Integer articleID;
     @Column (nullable = false)

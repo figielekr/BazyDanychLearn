@@ -1,16 +1,16 @@
 package com.bazydanychtest.user.tables;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "comment_likes")
 public class CommentLikes {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    Integer id;
     @Column(nullable = false)
-    int CommentID;
+    int commentID;
     @Column(nullable = false)
     String username;
     @Column(nullable = false)
@@ -19,18 +19,20 @@ public class CommentLikes {
     public CommentLikes() {
     }
 
+
+
     public CommentLikes(int commentID, String username, String likeDate) {
-        CommentID = commentID;
+        this.commentID = commentID;
         this.username = username;
         LikeDate = likeDate;
     }
 
     public int getCommentID() {
-        return CommentID;
+        return commentID;
     }
 
     public void setCommentID(int commentID) {
-        CommentID = commentID;
+        commentID = commentID;
     }
 
     public String getUsername() {
@@ -52,7 +54,7 @@ public class CommentLikes {
     @Override
     public String toString() {
         return "CommentLikes{" +
-                "CommentID=" + CommentID +
+                "CommentID=" + commentID +
                 ", username='" + username + '\'' +
                 ", LikeDate='" + LikeDate + '\'' +
                 '}';

@@ -20,7 +20,7 @@
 <body>
 <div lang="en" th:replace="fragments/header"> </div>
 <main class="add_Article">
-  <section>
+  <section class="add_article_section">
     <div class="title">
       <p>Dodaj zdjęcie.</p>
     </div>
@@ -30,7 +30,7 @@
           <b><p>Tytuł:</p></b>
           <input name="title" type="text">
           <b><p>Wybierz zdjęcie:</p></b>
-          <input class="input_file choose_photo" name="file" type="file">
+          <input class="input_file choose_photo" name="file" type="file" accept="image/jpeg, image/png, image/gif">
           <p></p>
           <input class="input_file_dalej" type="submit" name="submit" value=" Dalej ">
         </div>
@@ -43,4 +43,25 @@
 
 
 </body>
+<script>
+  const input = document.querySelector('input[type="file"]');
+
+  input.addEventListener('change', () => {
+
+    const filename = input.value;
+    const allowed = ["jpg", "png", "gif"];
+    const name = filename.split('.').pop(); //tworzy tablice ktora jest oddzielana znakami . a .pop daje ostatni element
+    if(input.files[0].size > 2024*1024){
+        alert("Obraz nie powinien przekraczać 2MB.")
+        document.querySelector('input[type="file"]').value = "";
+    }
+    if (allowed.includes(name)){
+
+    } else {
+      alert("Obraz powinien mieć rozszerzenie \"jpg\", \"png\", \"gif\"");
+      document.querySelector('input[type="file"]').value = "";
+    }
+
+  });
+</script>
 </html>

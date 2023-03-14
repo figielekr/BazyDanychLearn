@@ -2,6 +2,7 @@ package com.bazydanychtest;
 
 import com.bazydanychtest.security.UserInfoUserDetails;
 import com.bazydanychtest.user.tables.*;
+import org.hibernate.Length;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,10 +12,8 @@ import org.springframework.ui.Model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //@SpringBootTest
 @DataJpaTest
@@ -80,11 +79,20 @@ class BazyDanychTestApplicationTests {
 		System.out.println(object);
 
 	}
-//	@Test
-//	public void testConvert(){
-//		Optional<Article> article = articleRepository.findById(1);
-//		Boolean isLikes = articleLikesRepository.existsByArticleIDAndUsername()
-//				//if(articleLikes.existsByArticleIDAndUsername())
-//		//ArticleExtra articleExtra = new ArticleExtra(article.get().getId(), article.get().getAuthor(), article.get().getTitle(),article.get().getLikes(), article.get().getPath(), article.get().getAuthorPath(), article.get().getCreateDate(), article.get().getCreateTime(), article.get().);
-//	}
+	@Test
+	public void test(){
+		List<Integer> numbers = Arrays.asList(1,2,3,4,5);
+		numbers.stream()
+				.map(n -> n * 2)
+				.forEach(System.out::println);
+	}
+	@Test
+	public void test2(){
+		List<String> words = Arrays.asList("Java", "Python", "JavaScript", "Ruby", "C++");
+		words.stream()
+				.map(String::length)
+				.filter(length -> length > 2)
+				.forEach(System.out::println);
+	}
+
 }

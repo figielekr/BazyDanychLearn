@@ -1,52 +1,30 @@
 package com.bazydanychtest.user.tables;
 
-import jakarta.persistence.*;
-@Entity
-@Table(name = "comments")
-public class Comment {
-    @Id
+import jakarta.persistence.Column;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CommentExtra {
     private Integer id;
-
-    @Column(nullable = false)
     private Integer articleID;
-
-    @Column(nullable = false, length = 1000)
     private String comment;
-    @Column(nullable = false, length = 40)
     private String author;
-    @Column(nullable = false, length = 40)
     private Integer likes;
-    @Column(nullable = false, length = 40)
     private Integer disLikes;
-    @Column(nullable = false, length = 40)
     private String createDate;
-    @Column(nullable = false, length = 40)
     private String createTime;
-    @Transient
-    private String articleTitle;
+    private Boolean isLiked;
 
-    public Comment() {
-    }
-    public Comment(Integer articleID, String comment, Integer likes, String createDate, String createTime, String articleTitle) {
-        this.articleID = articleID;
-        this.comment = comment;
-        this.likes = likes;
-        this.createDate = createDate;
-        this.createTime = createTime;
-        this.articleTitle = articleTitle;
+    public CommentExtra() {
     }
 
-
-    public Comment(Integer articleID, String comment, String author, Integer likes, Integer disLikes, String createDate, String createTime) {
+    public CommentExtra(Integer id, Integer articleID, String comment, String author, Integer likes, String createDate, String createTime, Boolean isLiked) {
+        this.id = id;
         this.articleID = articleID;
         this.comment = comment;
         this.author = author;
         this.likes = likes;
-        this.disLikes = disLikes;
         this.createDate = createDate;
         this.createTime = createTime;
+        this.isLiked = isLiked;
     }
 
     public Integer getId() {
@@ -113,17 +91,17 @@ public class Comment {
         this.createTime = createTime;
     }
 
-    public String getArticleTitle() {
-        return articleTitle;
+    public Boolean getLiked() {
+        return isLiked;
     }
 
-    public void setArticleTitle(String articleTitle) {
-        this.articleTitle = articleTitle;
+    public void setLiked(Boolean liked) {
+        isLiked = liked;
     }
 
     @Override
     public String toString() {
-        return "Comment{" +
+        return "CommentExtra{" +
                 "id=" + id +
                 ", articleID=" + articleID +
                 ", comment='" + comment + '\'' +
@@ -132,7 +110,8 @@ public class Comment {
                 ", disLikes=" + disLikes +
                 ", createDate='" + createDate + '\'' +
                 ", createTime='" + createTime + '\'' +
-                ", articleTitle='" + articleTitle + '\'' +
+                ", isLiked=" + isLiked +
                 '}';
     }
 }
+

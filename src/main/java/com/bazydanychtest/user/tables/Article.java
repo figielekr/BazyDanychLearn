@@ -31,8 +31,19 @@ public class Article {
     private String createDate;
     @Column
     private String createTime;
+    //@Column(name = "column_amount", insertable = false, updatable = false)
+    @Transient
+    private Integer columnAmount;
 
     public Article() {
+    }
+    public Article(Integer id,String title, Integer likes, String createDate, String createTime, Integer columnAmount) {
+        this.id = id;
+        this.title = title;
+        this.likes = likes;
+        this.createDate = createDate;
+        this.createTime = createTime;
+        this.columnAmount = columnAmount;
     }
 
     public Article(String author, String title, Integer likes, Integer dislikes, String path, String authorPath, String createDate, String createTime) {
@@ -48,6 +59,14 @@ public class Article {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getColumnAmount() {
+        return columnAmount;
+    }
+
+    public void setColumnAmount(Integer columnAmount) {
+        this.columnAmount = columnAmount;
     }
 
     public void setId(Integer id) {
@@ -130,6 +149,7 @@ public class Article {
                 ", authorPath='" + authorPath + '\'' +
                 ", createDate='" + createDate + '\'' +
                 ", createTime='" + createTime + '\'' +
+                ", columnAmount=" + columnAmount +
                 '}';
     }
 }

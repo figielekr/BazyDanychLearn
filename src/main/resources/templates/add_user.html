@@ -23,12 +23,12 @@
 <div lang="en" th:replace="fragments/header"> </div>
 
   <div class="sign_up_container">
-    <form th:action="@{/add_user_create}" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form th:action="@{/add_user_create}" method="get" enctype="multipart/form-data" autocomplete="off">
       <div class="register">
         <div class="photo-part">
-          <img class="face non-gender active" src="./images/non-gender.jpg">
-          <img class="face man" src="./images/man.jpg">
-          <img class="face woman" src="./images/woman.jpg">
+          <img class="face non-gender active" src="/images/non-gender.jpg">
+          <img class="face man" src="/images/man.jpg">
+          <img class="face woman" src="/images/woman.jpg">
           <div class="non-gender"></div>
           <div class="man"></div>
           <div class="woman"></div>

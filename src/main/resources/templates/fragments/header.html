@@ -10,7 +10,7 @@
 <header>
     <div class="container">
         <div class="logo-container">
-            <a th:href="@{/}"><h3 class="logo">Logo<span>Brand</span></h3></a>
+            <a href="/display_articles"><h3 class="logo">Logo<span>Brand</span></h3></a>
         </div>
         <div class="menu">
             <div class="links">
@@ -18,7 +18,7 @@
                     <li class="nav-link"><a class="dropdown-test" href="#">Products<i class="fa-solid fa-caret-up"></i></a>
                         <div class="submenu">
                             <ul>
-                                <li class="submenu-link"><a th:href="@{add_article}">Add meme</a></li>
+                                <li class="submenu-link"><a href="/add_article">Add meme</a></li>
                                 <li class="submenu-link"><a href="#">Link 2</a></li>
                                 <li class="submenu-link"><a class="deep-link" href="#">Link 3<i class="fa-solid fa-caret-up"></i></a>
                                     <div class="submenu second">
@@ -93,8 +93,8 @@
             </div>
 
             <div th:if="${currentUser} == anonymousUser" class="login logout" >
-                <a href="./login" class="log log-in">Log in</a>
-                <a href="./add_user" class="log sign-in">Sign up</a>
+                <a href="/login" class="log log-in">Log in</a>
+                <a href="/add_user" class="log sign-in">Sign up</a>
             </div>
 
         </div>

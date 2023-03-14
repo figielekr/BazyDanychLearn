@@ -16,6 +16,7 @@ li{
 .profile_nav {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
     height: 3rem;
     background-color: cadetblue;
@@ -47,7 +48,7 @@ a.last{
     flex-direction: row;
     width: 80%;
     min-width: 820px;
-    height: 200px;
+    height: 220px;
     background-color: gray;
     border-radius: 10px;
 }
@@ -68,7 +69,7 @@ a.last{
     width: 100%;
     height: 100%;
     grid-template-columns: 30% 70%;
-    grid-template-rows: 12% 12% 12% 12% 12% 12% 12% 16%;
+    grid-template-rows: 8% 11% 11% 11% 11% 11% 11% 11% 14%;
 }
 .profile_info_avatar{
     display: flex;
@@ -95,4 +96,58 @@ a.last{
 }
 .error_window p{
     font-size: 20px;
+}
+.profile_articles{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    min-width: 820px;
+    background-color: gray;
+    border-radius: 10px;
+    padding: 0 15px 15px;
+}
+.header.article_info_row{
+    margin-top: 15px;
+}
+.article_info_row{
+    display: grid;
+    /*align-items: center;*/
+    grid-template-columns: 25% 25% 25% 25%;
+    width: 100%;
+    height: 35px;
+    /*background-color: green;*/
+    padding: 5px;
+    /*margin-bottom: 10px;*/
+}
+.article_info_row:not(:nth-last-child(1)){
+    border-bottom: 2px solid black;
+}
+.article_info_row a{
+    border: none;
+}
+.article_info_row a:hover{
+    color: yellow;
+    background-color: initial;
+}
+.profile_comments{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    min-width: 820px;
+    height: fit-content;
+    background-color: gray;
+    border-radius: 10px;
+    padding: 0 15px 15px;
+}
+.info{
+    margin-top: 20px;
+}
+.none{
+    display: none;
+}
+.session_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 10px;
 }
